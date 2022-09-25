@@ -5,9 +5,8 @@ import { CompetitionMatch } from '@typedefs/competition-matches.type'
 import RoundResultRepository from '@/repositories/result.repository'
 import UserRepository from '@/repositories/users.repository'
 import { User } from '@/typedefs/users.type'
-import SteamRepository from '@/services/steam.service'
 
-@Resolver(of => CompetitionMatch)
+@Resolver(() => CompetitionMatch)
 export class MatchResolver {
   private matchRepository = new CompetitionMatchRepository()
   private resultRepository = new RoundResultRepository()

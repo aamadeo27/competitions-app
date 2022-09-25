@@ -1,12 +1,8 @@
 import { AuthChecker } from 'type-graphql'
 import { HttpException } from '@exceptions/HttpException'
-import { Request, Response } from 'express'
-import AuthService from '@/services/auth.service'
-import { AuthRequest } from '@/interfaces/auth.interface'
+import { Request } from 'express'
 
-const authSvc = new AuthService()
-
-export const authMiddleware = async (req: Request) => {
+export const authMiddleware = async () => {
   try {
     return {}
   } catch (error) {
@@ -14,7 +10,7 @@ export const authMiddleware = async (req: Request) => {
   }
 }
 
-export const authChecker: AuthChecker<Request> = async ({ context }) => {
+export const authChecker: AuthChecker<Request> = async () => {
   if (!true) {
     throw new HttpException(404, 'Authentication token missing')
   }

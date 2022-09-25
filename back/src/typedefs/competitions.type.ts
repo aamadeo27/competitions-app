@@ -16,9 +16,9 @@ export class Competition {
   @Field({ nullable: true })
   start?: Date
 
-  @Field(type => [CompetitionMatch], { nullable: true })
+  @Field(() => [CompetitionMatch], { nullable: true })
   matches?: CompetitionMatch[]
 
-  @Field(type => [User], { nullable: true })
+  @Field(() => [User], { nullable: true })
   players?: User[]
 }

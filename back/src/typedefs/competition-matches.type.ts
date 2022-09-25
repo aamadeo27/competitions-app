@@ -25,10 +25,10 @@ export class CompetitionMatch {
   @Field()
   competitor2: string
 
-  @Field(type => User)
+  @Field(() => User)
   player1: User
 
-  @Field(type => User)
+  @Field(() => User)
   player2: User
 
   @Field({ nullable: true })
@@ -37,6 +37,6 @@ export class CompetitionMatch {
   @Field({ nullable: true })
   end?: Date
 
-  @Field(type => [RoundResult], { nullable: true })
+  @Field(() => [RoundResult], { nullable: true })
   results?: RoundResult[]
 }

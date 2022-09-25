@@ -80,9 +80,10 @@ class App {
           ? ApolloServerPluginLandingPageProductionDefault({ footer: false })
           : ApolloServerPluginLandingPageLocalDefault({ footer: false }),
       ],
-      context: async ({ req }) => {
+      context: async () => {
         try {
-          const user = await authMiddleware(req)
+          const user = await authMiddleware()
+
           return { user }
         } catch (error) {
           throw new Error(error)
