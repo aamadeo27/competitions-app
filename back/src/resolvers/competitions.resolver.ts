@@ -5,7 +5,7 @@ import { Competition } from '@typedefs/competitions.type'
 import UserRepository from '@/repositories/users.repository'
 import CompetitionMatchRepository from '@/repositories/competition-matches.repository'
 
-@Resolver(of => Competition)
+@Resolver(() => Competition)
 export class CompetitionResolver extends CompetitionRepository {
   private userRepository = new UserRepository()
   private matchRepository = new CompetitionMatchRepository()

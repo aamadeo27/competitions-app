@@ -1,0 +1,13 @@
+#!/bin/bash
+
+cd back
+if ! npm run lint
+then
+  exit 1
+fi
+
+cd ../front
+if ! npm run lint
+then
+  exit 1
+fi

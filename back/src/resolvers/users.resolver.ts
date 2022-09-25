@@ -5,7 +5,7 @@ import { User } from '@typedefs/users.type'
 import SteamRepository from '@/services/steam.service'
 import RoundResultRepository from '@/repositories/result.repository'
 
-@Resolver(of => User)
+@Resolver(() => User)
 export class UserResolver {
   private userRepository = new UserRepository()
   private steamRepository = new SteamRepository()
