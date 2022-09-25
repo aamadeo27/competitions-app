@@ -1,0 +1,42 @@
+query GetCompetitionById($competitionId: String!) {
+  getCompetitionById(competitionId: $competitionId) {
+    id
+    name
+    shortname
+    start
+    matches {
+      rounds
+      name
+      results {
+        winner
+      }
+      player1 {
+        steamId
+        avatar
+        name
+        games
+        score
+      }
+      player2 {
+        steamId
+        avatar
+        name
+        games
+        score
+      }
+      start
+      results {
+        order
+        winner
+        details
+      }
+    }
+    players {
+      name
+      score
+      games
+      steamId
+      avatar
+    }
+  }
+}

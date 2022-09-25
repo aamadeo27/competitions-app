@@ -1,0 +1,27 @@
+query GetCompetitions {
+  getCompetitions {
+    id
+    name
+    shortname
+    start
+    players {
+      name
+      score
+      avatar
+    }
+    matches {
+      start
+      results {
+        id
+      }
+      player1 {
+        name
+        avatar
+      }
+      player2 {
+        name
+        avatar
+      }
+    }
+  }
+}

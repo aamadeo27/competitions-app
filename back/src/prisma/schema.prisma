@@ -1,0 +1,54 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id              String  @id @default(auto()) @map("_id") @db.ObjectId
+  steamId         String  @unique
+  name            String  @unique
+  avatar          String
+  competitionId   String? @db.ObjectId @unique
+  discordId       String? @unique
+  twitchId        String? @unique
+}
+
+model Token {
+  id      String @id @default(auto()) @map("_id") @db.ObjectId
+  userId  String @unique
+  token   String
+}
+
+model Competition {
+  id        String @id @default(auto()) @map("_id") @db.ObjectId
+  name      String @unique
+  shortname String
+  start     DateTime?
+}
+
+model CompetitionMatch {
+  id              String @id @default(auto()) @map("_id") @db.ObjectId
+  competitionId   String @db.ObjectId
+  phase           Int
+  name            String
+  competitor1     String
+  competitor2     String
+  rounds          Int @default(4)
+  start           DateTime?
+  end             DateTime?
+}
+
+model RoundResult {  
+  id        String @id @default(auto()) @map("_id") @db.ObjectId
+  matchId   String @db.ObjectId
+  order     Int 
+  winner    String
+  details  String
+}

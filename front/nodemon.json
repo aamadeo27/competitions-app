@@ -1,0 +1,5 @@
+{ 
+    "watch": ["src/**/*"],
+    "exec": "node scripts/fast-build.js",
+    "ext": "js, json, ts, tsx, proto"
+}
