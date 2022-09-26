@@ -1,12 +1,28 @@
 #!/bin/bash
 
+function shouldInstall() {
+  if ! [ -z $1 ] && [ $1 == '--install' ] ; then
+    return 0
+  fi
+
+  return 1
+}
+
+
 cd back
+if shouldInstall $1 ; then
+  npm i
+fi
+
 if ! npm run lint
 then
   exit 1
 fi
 
 cd ../front
+if shouldInstall $1 ; then
+  npm i
+fi
 if ! npm run lint
 then
   exit 1
