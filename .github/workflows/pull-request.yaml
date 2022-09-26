@@ -1,6 +1,6 @@
 name: pull-request
 
-on: pull-request
+on: check-run
 
 jobs:
   lint:
