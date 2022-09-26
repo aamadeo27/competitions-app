@@ -1,7 +1,6 @@
 name: pull-request
 
 on: pull_request
-  type: [opened,edited]
 
 jobs:
   lint:
