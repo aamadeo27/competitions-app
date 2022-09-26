@@ -1,6 +1,7 @@
 name: pull-request
 
-on: check_run
+on: pull_request
+  type: [opened,edited]
 
 jobs:
   lint:
