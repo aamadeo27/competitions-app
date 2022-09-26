@@ -11,4 +11,4 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Run lint
-        run: ./lint
+        run: bash lint
