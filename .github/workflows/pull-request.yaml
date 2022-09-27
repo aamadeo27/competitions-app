@@ -4,10 +4,19 @@ on: pull_request
 
 jobs:
   lint:
-    name: Lint code base
+    name: lint
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Run lint
-        run: bash lint --install
+        run: bash lint
+
+  test:
+    name: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Run Test
+        run: bash test

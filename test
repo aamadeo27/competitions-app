@@ -9,13 +9,12 @@ function shouldInstall() {
 }
 
 
-
 cd back
 if shouldInstall ; then
   yarn
 fi
 
-if ! npm run lint
+if ! npm test
 then
   exit 1
 fi
@@ -24,7 +23,7 @@ cd ../front
 if shouldInstall ; then
   yarn
 fi
-if ! npm run lint
+if ! npm test
 then
   exit 1
 fi
