@@ -78,7 +78,7 @@
     "dev": "nodemon",
     "start": "cross-env PORT=5000 REACT_APP_API_URL=http://localhost:3000 node scripts/start.js",
     "build": "node scripts/build.js && replaceInBackend.sh",
-    "test": "node scripts/test.js",
+    "test": "jest --runInBand",
     "gen-types": "graphql-codegen --config codegen.yml",
     "lint": "eslint --ignore-path .gitignore --ext .ts src/"
   },
