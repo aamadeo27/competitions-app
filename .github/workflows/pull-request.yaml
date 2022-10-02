@@ -19,8 +19,8 @@ jobs:
       - name: Start a CockroachDB Instance
         run: |
           cd back
-          echo $GH_RUNNER_SUDO
-          echo $GH_RUNNER_SUDO | sudo -S docker compose up -d crdb
+          echo ${{ secrets.GH_RUNNER_SUDO }}
+          echo ${{ secrets.GH_RUNNER_SUDO }} | sudo -S docker compose up -d crdb
           wait-for-it -h localhost -p 26257
 
       - name: Set up DB
