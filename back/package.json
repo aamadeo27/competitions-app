@@ -7,7 +7,7 @@
   "scripts": {
     "repl": "ts-node -r ./src/setup-env -r ./src/setup-repl.ts",
     "db:seed": "ts-node --transpile-only src/seed.ts",
-    "test:setup-db": "prisma db push --preview-feature",
+    "db:push": "prisma db push --preview-feature",
     "migrate:dev": "prisma migrate dev",
     "migrate:deploy": "prisma migrate deploy",
     "start": "npm run build && cross-env NODE_ENV=production node dist/server.js",
