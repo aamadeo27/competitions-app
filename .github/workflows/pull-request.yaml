@@ -11,7 +11,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 15.x
-      - run: actions-scripts/install
+      - run: bash actions-scripts/install
       
       - name: Run lint
         run: bash actions-scripts/lint
