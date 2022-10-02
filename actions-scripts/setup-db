@@ -1,0 +1,5 @@
+#!/bin/bash
+
+cd back/
+cp .env.test.local .env
+npm run db:push

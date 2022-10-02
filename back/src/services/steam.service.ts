@@ -1,11 +1,11 @@
-import { EntityRepository } from 'typeorm'
 import { HttpException } from '@exceptions/HttpException'
 import { isEmpty } from '@utils/util'
 import { request } from '@utils/request'
 import { auth } from '@config'
 
 const urls = {
-  playerSummaries: id => `http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=${auth.steam.apiKey}&steamids=${id}`,
+  playerSummaries: id =>
+    `http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=${auth.steam.apiKey}&steamids=${id}`,
 }
 
 export type SteamInfo = {
@@ -13,7 +13,6 @@ export type SteamInfo = {
   name: string
 }
 
-@EntityRepository()
 export default class SteamApi {
   public async getSteamInfo(steamId: string): Promise<SteamInfo> {
     if (isEmpty(steamId)) throw new HttpException(400, "User doesn't have steamId")

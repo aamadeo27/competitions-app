@@ -1,16 +1,7 @@
 version: '3.7'
 
 services:
-  proxy:
-    image: nginx:alpine
-    container_name: proxy
-    ports:
-      - '80:80'
-    volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf
-    restart: 'unless-stopped'
-    networks:
-      - backend
+
   server:
     build:
       context: ./
@@ -26,18 +17,18 @@ services:
     networks:
       - backend
     links:
-      - mongo
+      - crdb
     depends_on:
-      - mongo
-  mongo:
-    image: prismagraphql/mongo-single-replica:5.0.3
-    # restart: always
-    # ports:
-    #   - "27017:27017"
-    #   - "28017:28017"
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: example
+      - crdb
+
+  crdb:
+    image: cockroachdb/cockroach:latest-v21.2
+    ports:
+      - "26257:26257"
+      - "8080:8080"
+    command: start-single-node --insecure
+    volumes:
+      - cockroach:/cockroach/cockroach-data
     networks:
       - backend
 
@@ -46,5 +37,4 @@ networks:
     driver: bridge
 
 volumes:
-  data:
-    driver: local
+  cockroach:

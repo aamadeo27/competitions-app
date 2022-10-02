@@ -1,4 +1,4 @@
-query GetCompetitionById($competitionId: String!) {
+query GetCompetitionById($competitionId: bigint!) {
   getCompetitionById(competitionId: $competitionId) {
     id
     name

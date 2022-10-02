@@ -1,5 +1,8 @@
 import 'reflect-metadata'
-import { ApolloServerPluginLandingPageProductionDefault, ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core'
+import {
+  ApolloServerPluginLandingPageProductionDefault,
+  ApolloServerPluginLandingPageLocalDefault,
+} from 'apollo-server-core'
 import { ApolloServer } from 'apollo-server-express'
 import compression from 'compression'
 import cookieParser from 'cookie-parser'
@@ -31,7 +34,7 @@ class App {
   }
 
   public async listen() {
-    this.app.listen(this.port, () => {
+    return this.app.listen(this.port, () => {
       logger.info(`=================================`)
       logger.info(`======= ENV: ${this.env} =======`)
       logger.info(`🚀 App listening on the port ${this.port}`)

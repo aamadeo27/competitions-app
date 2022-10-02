@@ -1,4 +1,3 @@
-import { EntityRepository } from 'typeorm'
 import { HttpException } from '@exceptions/HttpException'
 import { isEmpty } from '@utils/util'
 import { PrismaClient } from '@prisma/client'
@@ -7,15 +6,14 @@ import { CreateCompetitionMatchDto } from '@dtos/competition-matches.dto'
 
 const prisma = new PrismaClient()
 
-@EntityRepository()
 export default class CompetitionMatchRepository {
-  public async matchFindInCompetition(competitionId: string): Promise<CompetitionMatch[]> {
-    const matchs = await prisma.competitionMatch.findMany({ where: { competitionId } })
+  public async matchFindInCompetition(competitionId: bigint): Promise<CompetitionMatch[]> {
+    const matches = await prisma.competitionMatch.findMany({ where: { competitionId } })
 
-    return matchs
+    return matches
   }
 
-  public async matchFindById(id: string): Promise<CompetitionMatch> {
+  public async matchFindById(id: bigint): Promise<CompetitionMatch> {
     if (isEmpty(id)) throw new HttpException(400, 'id is empty')
 
     const match: CompetitionMatch = await prisma.competitionMatch.findUnique({ where: { id } })
@@ -27,24 +25,33 @@ export default class CompetitionMatchRepository {
   public async matchCreate(matchData: CreateCompetitionMatchDto): Promise<CompetitionMatch> {
     if (isEmpty(matchData)) throw new HttpException(400, 'matchData is empty')
 
-    const createCompetitionMatchData: CompetitionMatch = await prisma.competitionMatch.create({ data: matchData })
+    const createCompetitionMatchData: CompetitionMatch = await prisma.competitionMatch.create({
+      data: matchData,
+    })
 
     return createCompetitionMatchData
   }
 
-  public async matchUpdate(id: string, matchData: CreateCompetitionMatchDto): Promise<CompetitionMatch> {
+  public async matchUpdate(
+    id: bigint,
+    matchData: CreateCompetitionMatchDto,
+  ): Promise<CompetitionMatch> {
     if (isEmpty(matchData)) throw new HttpException(400, 'matchData is empty')
 
-    const findCompetitionMatch: CompetitionMatch = await prisma.competitionMatch.findUnique({ where: { id } })
+    const findCompetitionMatch: CompetitionMatch = await prisma.competitionMatch.findUnique({
+      where: { id },
+    })
     if (!findCompetitionMatch) throw new HttpException(409, "CompetitionMatch doesn't exist")
 
     return await prisma.competitionMatch.update({ where: { id }, data: matchData })
   }
 
-  public async matchDelete(id: string): Promise<CompetitionMatch> {
+  public async matchDelete(id: bigint): Promise<CompetitionMatch> {
     if (isEmpty(id)) throw new HttpException(400, "CompetitionMatch doesn't existId")
 
-    const findCompetitionMatch: CompetitionMatch = await prisma.competitionMatch.findUnique({ where: { id } })
+    const findCompetitionMatch: CompetitionMatch = await prisma.competitionMatch.findUnique({
+      where: { id },
+    })
     if (!findCompetitionMatch) throw new HttpException(409, "CompetitionMatch doesn't exist")
 
     await prisma.competitionMatch.delete({ where: { id } })

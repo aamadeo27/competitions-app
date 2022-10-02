@@ -1,0 +1,7 @@
+#!/bin/bash
+
+cd back
+npm ci
+
+cd ../front
+npm ci

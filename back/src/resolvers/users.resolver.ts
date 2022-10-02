@@ -1,14 +1,29 @@
-import { Arg, FieldResolver, Mutation, Query, Resolver, Root } from 'type-graphql'
-import { CreateUserDto } from '@dtos/users.dto'
+import { BigIntResolver } from 'graphql-scalars'
+import {
+  Arg,
+  Args,
+  ArgsType,
+  Field,
+  FieldResolver,
+  Mutation,
+  Query,
+  Resolver,
+  Root,
+} from 'type-graphql'
+import { UserDto } from '@dtos/users.dto'
 import UserRepository from '@repositories/users.repository'
 import { User } from '@typedefs/users.type'
-import SteamRepository from '@/services/steam.service'
 import RoundResultRepository from '@/repositories/result.repository'
+
+@ArgsType()
+class GetUsersInCompetitionArgs {
+  @Field(() => BigIntResolver, { nullable: true })
+  competitionId?: bigint
+}
 
 @Resolver(() => User)
 export class UserResolver {
   private userRepository = new UserRepository()
-  private steamRepository = new SteamRepository()
   private resultRepository = new RoundResultRepository()
 
   @Query(() => [User], {
@@ -30,24 +45,18 @@ export class UserResolver {
   @Query(() => [User], {
     description: 'Users find by competitionId',
   })
-  async getUsersInCompetition(@Arg('competitionId') competitionId: string): Promise<User[]> {
+  async getUsersInCompetition(
+    @Args() { competitionId }: GetUsersInCompetitionArgs,
+  ): Promise<User[]> {
     const users: User[] = await this.userRepository.userInCompetition(competitionId)
     return users
   }
 
   @Mutation(() => User, {
-    description: 'User create',
-  })
-  async createUser(@Arg('userData') userData: CreateUserDto): Promise<User> {
-    const user: User = await this.userRepository.userCreate(userData)
-    return user
-  }
-
-  @Mutation(() => User, {
     description: 'User update',
   })
-  async updateUser(@Arg('userId') userId: string, @Arg('userData') userData: CreateUserDto): Promise<User> {
-    const user: User = await this.userRepository.userUpdate(userId, userData)
+  async updateUser(@Arg('userData') userData: UserDto): Promise<User> {
+    const user: User = await this.userRepository.userUpdate(userData)
     return user
   }
 

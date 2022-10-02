@@ -68,7 +68,7 @@ const createCompetitions = async () => {
 }
 
 const userSvc = new UserService()
-const createUsers = async (competitionId: string) => {
+const createUsers = async (competitionId: bigint) => {
   for (let i = 0; i < players.length; i++) {
     const { id } = players[i]
     logger.info(`\tAdding ${players[i].name}`)
@@ -100,7 +100,7 @@ const flipWinner = ({ competitor1, competitor2 }: CompetitionMatch) => {
   return Math.random() < 0.5 ? competitor1 : competitor2
 }
 
-const createMatches = async (competitionId: string) => {
+const createMatches = async (competitionId: bigint) => {
   for (let i = 0; i < players.length; i++) {
     for (let j = i + 1; j < players.length; j++) {
       const day = 1 + i + 7 * (j - i - 1)
@@ -121,10 +121,25 @@ const createMatches = async (competitionId: string) => {
         logger.info(`Playing`)
         await db.roundResult.createMany({
           data: [
-            { matchId: match.id, order: 1, winner: flipWinner(match), details: 'Stone Large Inland' },
-            { matchId: match.id, order: 2, winner: flipWinner(match), details: 'Tool Large Highland' },
+            {
+              matchId: match.id,
+              order: 1,
+              winner: flipWinner(match),
+              details: 'Stone Large Inland',
+            },
+            {
+              matchId: match.id,
+              order: 2,
+              winner: flipWinner(match),
+              details: 'Tool Large Highland',
+            },
             { matchId: match.id, order: 3, winner: flipWinner(match), details: 'Brz Huge Coastal' },
-            { matchId: match.id, order: 4, winner: flipWinner(match), details: 'Iron Huge Sm Islands' },
+            {
+              matchId: match.id,
+              order: 4,
+              winner: flipWinner(match),
+              details: 'Iron Huge Sm Islands',
+            },
           ],
         })
       }

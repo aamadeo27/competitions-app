@@ -1,11 +1,11 @@
-import { Field, ObjectType } from 'type-graphql'
+import { Field, Float, ObjectType } from 'type-graphql'
 import { CompetitionMatch } from './competition-matches.type'
 import { User } from './users.type'
 
 @ObjectType()
 export class Competition {
-  @Field()
-  id: string
+  @Field(() => Float)
+  id: bigint
 
   @Field()
   name: string

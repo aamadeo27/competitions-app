@@ -9,6 +9,9 @@ import UIRoute from './routes/ui.route'
 
 validateEnv()
 
-const app = new App([UserResolver, CompetitionResolver, MatchResolver], [new AuthRoute(), new UIRoute()])
+const app = new App(
+  [UserResolver, CompetitionResolver, MatchResolver],
+  [new AuthRoute(), new UIRoute()],
+)
 
 app.listen()

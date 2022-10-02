@@ -1,11 +1,8 @@
-import { Field, ObjectType } from 'type-graphql'
+import { Field, ID, Float, ObjectType } from 'type-graphql'
 
 @ObjectType()
 export class User {
-  @Field()
-  id: string
-
-  @Field()
+  @Field(() => ID)
   steamId: string
 
   @Field()
@@ -14,8 +11,8 @@ export class User {
   @Field()
   avatar?: string
 
-  @Field({ nullable: true })
-  competitionId?: string
+  @Field(() => Float, { nullable: true })
+  competitionId?: bigint
 
   @Field({ nullable: true })
   discordId?: string
