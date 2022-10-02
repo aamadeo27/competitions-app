@@ -1,6 +1,6 @@
 export interface RoundResult {
-  id: string
-  matchId: string
+  id: bigint
+  matchId: bigint
   order: number
   winner: string
   details: string

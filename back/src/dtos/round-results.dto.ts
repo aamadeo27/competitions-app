@@ -4,10 +4,10 @@ import { RoundResult } from '@/typedefs/round-results.type'
 @InputType()
 export class CreateRoundResultDto implements Partial<RoundResult> {
   @Field()
-  id: string
+  id: bigint
 
   @Field()
-  matchId: string
+  matchId: bigint
 
   @Field()
   order: number

@@ -1,8 +1,8 @@
 export interface User {
-  id: string
   steamId: string
   name?: string
-  competitionId?: string
+  avatar?: string
+  competitionId?: bigint
   discordId?: string
   twitchId?: string
 }

@@ -1,0 +1,13 @@
+#!/bin/bash
+
+cd back
+if ! npm test
+then
+  exit 1
+fi
+
+cd ../front
+if ! npm test
+then
+  exit 1
+fi

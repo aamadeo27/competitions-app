@@ -1,5 +1,5 @@
 export interface Competition {
-  id: string
+  id: bigint
   name: string
   shortname: string
   start?: Date

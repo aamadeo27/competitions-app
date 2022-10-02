@@ -14,7 +14,11 @@ passport.use(
   new Steam.Strategy(auth.steam, (_, profile, done) => {
     process.nextTick(async () => {
       try {
-        await userService.connect({ steamId: profile.id })
+        await userService.connect({
+          steamId: profile.id,
+          name: profile.personaname,
+          avatar: profile.avatarfull,
+        })
 
         return done(null, profile)
       } catch (error) {
@@ -50,15 +54,19 @@ export default class AuthService {
 
   public steam = (req: Request, res: Response, next: NextFunction) => {
     try {
-      passport.authenticate('steam', { session: false, failureRedirect: '/login', successRedirect: '/' }, async (error, user) => {
-        if (error) {
-          return next(new HttpException(500, `Error in authentication:`))
-        }
+      passport.authenticate(
+        'steam',
+        { session: false, failureRedirect: '/login', successRedirect: '/' },
+        async (error, user) => {
+          if (error) {
+            return next(new HttpException(500, `Error in authentication:`))
+          }
 
-        await this.tokenSvc.storeToken(user, res)
+          await this.tokenSvc.storeToken(user, res)
 
-        next()
-      })(req, res, next)
+          next()
+        },
+      )(req, res, next)
     } catch (error) {
       next(error)
     }

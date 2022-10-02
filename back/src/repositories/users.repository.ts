@@ -1,5 +1,4 @@
-import { EntityRepository } from 'typeorm'
-import { CreateUserDto } from '@dtos/users.dto'
+import { CreateUserDto, UserDto } from '@dtos/users.dto'
 import { HttpException } from '@exceptions/HttpException'
 import { User } from '@interfaces/users.interface'
 import { isEmpty } from '@utils/util'
@@ -8,7 +7,6 @@ import { logger } from '@utils/logger'
 
 const prisma = new PrismaClient()
 
-@EntityRepository()
 export default class UserRepository {
   public async userFindAll(): Promise<User[]> {
     const users = await prisma.user.findMany()
@@ -16,7 +14,7 @@ export default class UserRepository {
     return users
   }
 
-  public async userInCompetition(competitionId: string): Promise<User[]> {
+  public async userInCompetition(competitionId: bigint): Promise<User[]> {
     const users = await prisma.user.findMany({
       where: { competitionId },
     })
@@ -44,7 +42,7 @@ export default class UserRepository {
     return createUserData
   }
 
-  public async userUpdate(steamId: string, userData: CreateUserDto): Promise<User> {
+  public async userUpdate(userData: UserDto): Promise<User> {
     if (isEmpty(userData)) throw new HttpException(400, 'userData is empty')
 
     const findUser: User = await prisma.user.findUnique({ where: { steamId: userData.steamId } })

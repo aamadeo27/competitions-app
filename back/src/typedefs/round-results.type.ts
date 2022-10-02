@@ -1,12 +1,12 @@
-import { Field, ObjectType } from 'type-graphql'
+import { Field, Float, ObjectType } from 'type-graphql'
 
 @ObjectType()
 export class RoundResult {
-  @Field()
-  id: string
+  @Field(() => Float)
+  id: bigint
 
-  @Field()
-  matchId: string
+  @Field(() => Float)
+  matchId: bigint
 
   @Field()
   order: number

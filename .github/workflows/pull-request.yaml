@@ -3,20 +3,26 @@ name: pull-request
 on: pull_request
 
 jobs:
-  lint:
-    name: lint
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Run lint
-        run: bash lint
-
   test:
-    name: test
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
+    services:
+      db:
+        image: cockroachdb/cockroach:latest-v21.2
+        ports:
+          - "26257:26257"
+        command: start-single-node --insecure
+    env:
+      DATABASE_URL: postgresql://root@localhost:26257/aoetest?sslmode=disable
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Run Test
-        run: bash test
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          noded-version: 15.x
+      - run: npm i
+      - name: Run lint
+        run: bash actions-scripts/lint
+      - name: Set up DB
+        run: bash actions-scripts/setup-db
+      - name: Run Tests
+        run: bash actions-scripts/test

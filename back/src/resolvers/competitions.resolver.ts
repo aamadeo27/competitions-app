@@ -4,6 +4,7 @@ import CompetitionRepository from '@repositories/competitions.repository'
 import { Competition } from '@typedefs/competitions.type'
 import UserRepository from '@/repositories/users.repository'
 import CompetitionMatchRepository from '@/repositories/competition-matches.repository'
+import { BigIntResolver } from 'graphql-scalars'
 
 @Resolver(() => Competition)
 export class CompetitionResolver extends CompetitionRepository {
@@ -21,7 +22,9 @@ export class CompetitionResolver extends CompetitionRepository {
   @Query(() => Competition, {
     description: 'Competition find by id',
   })
-  async getCompetitionById(@Arg('competitionId') competitionId: string): Promise<Competition> {
+  async getCompetitionById(
+    @Arg('competitionId', () => BigIntResolver) competitionId: bigint,
+  ): Promise<Competition> {
     const competition: Competition = await this.competitionFindById(competitionId)
     return competition
   }
@@ -29,7 +32,9 @@ export class CompetitionResolver extends CompetitionRepository {
   @Mutation(() => Competition, {
     description: 'Competition create',
   })
-  async createCompetition(@Arg('competitionData') competitionData: CreateCompetitionDto): Promise<Competition> {
+  async createCompetition(
+    @Arg('competitionData') competitionData: CreateCompetitionDto,
+  ): Promise<Competition> {
     const competition: Competition = await this.competitionCreate(competitionData)
     return competition
   }
@@ -38,7 +43,7 @@ export class CompetitionResolver extends CompetitionRepository {
     description: 'Competition update',
   })
   async updateCompetition(
-    @Arg('competitionId') competitionId: string,
+    @Arg('competitionId', () => BigIntResolver) competitionId: bigint,
     @Arg('competitionData') competitionData: CreateCompetitionDto,
   ): Promise<Competition> {
     const competition: Competition = await this.competitionUpdate(competitionId, competitionData)
@@ -48,7 +53,9 @@ export class CompetitionResolver extends CompetitionRepository {
   @Mutation(() => Competition, {
     description: 'Competition delete',
   })
-  async deleteCompetition(@Arg('competitionId') competitionId: string): Promise<Competition> {
+  async deleteCompetition(
+    @Arg('competitionId', () => BigIntResolver) competitionId: bigint,
+  ): Promise<Competition> {
     const competition: Competition = await this.competitionDelete(competitionId)
     return competition
   }

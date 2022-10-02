@@ -213,7 +213,7 @@ export type GetCompetitionsQuery = { __typename?: 'Query', getCompetitions: Arra
 
 
 export const GetCompetitionByIdDocument = gql`
-    query GetCompetitionById($competitionId: String!) {
+    query GetCompetitionById($competitionId: bigint!) {
   getCompetitionById(competitionId: $competitionId) {
     id
     name

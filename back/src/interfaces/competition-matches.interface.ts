@@ -1,7 +1,7 @@
-export interface RoundResult {
-  id: string
+export interface CompetitionMatch {
+  id: bigint
   phase: number
-  competitionId: string
+  competitionId: bigint
   name: string
   competitor1: string
   competitor2: string
