@@ -7,10 +7,10 @@ jobs:
     runs-on: self-hosted
     steps:
       - uses: actions/checkout@v3
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Use Node.js 15.x
         uses: actions/setup-node@v3
         with:
-          noded-version: 15.x
+          node-version: 15.x
       - run: npm i
       
       - name: Run lint
