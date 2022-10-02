@@ -20,7 +20,7 @@ jobs:
         run: |
           cd back
           echo $GH_RUNNER_SUDO | sudo -S docker pull cockroachdb/cockroach:latest-v21.2
-          sudo docker compose up -d crdb
+          echo $GH_RUNNER_SUDO | sudo -S docker compose up -d crdb
           wait-for-it -h localhost -p 26257
 
       - name: Set up DB
