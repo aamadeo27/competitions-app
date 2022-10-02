@@ -19,7 +19,7 @@ jobs:
       - name: Start a CockroachDB Instance
         run: |
           cd back
-          echo $GH_RUNNER_SUDO | sudo -S docker pull cockroachdb/cockroach:latest-v21.2
+          echo $GH_RUNNER_SUDO
           echo $GH_RUNNER_SUDO | sudo -S docker compose up -d crdb
           wait-for-it -h localhost -p 26257
 
