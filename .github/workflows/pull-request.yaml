@@ -19,6 +19,7 @@ jobs:
       - name: Start a CockroachDB Instance
         run: |
           sudo docker pull cockroachdb/cockroach:latest-v21.2
+          cd back
           sudo docker compose up -d crdb
           wait-for-it -h localhost -p 26257
 
