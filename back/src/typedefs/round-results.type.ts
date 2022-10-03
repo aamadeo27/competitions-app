@@ -1,11 +1,12 @@
-import { Field, Float, ObjectType } from 'type-graphql'
+import { BigIntResolver } from 'graphql-scalars'
+import { Field, ObjectType } from 'type-graphql'
 
 @ObjectType()
 export class RoundResult {
-  @Field(() => Float)
+  @Field(() => BigIntResolver)
   id: bigint
 
-  @Field(() => Float)
+  @Field(() => BigIntResolver)
   matchId: bigint
 
   @Field()

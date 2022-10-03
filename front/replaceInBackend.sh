@@ -1,5 +1,7 @@
 #!/bin/bash
 
+echo 'Replacing Front assets in Back'
+
 verboseExec() {
   echo $@
   $@

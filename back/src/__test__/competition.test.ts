@@ -4,7 +4,10 @@ import App from '@/app'
 import { UserResolver } from '@resolvers/users.resolver'
 import { CompetitionResolver } from '@resolvers/competitions.resolver'
 import { MatchResolver } from '@resolvers/competition-matches.resolver'
+import { PrismaClient } from '@prisma/client'
+import { Competition } from '@/typedefs/competitions.type'
 
+const db = new PrismaClient()
 const app = new App([UserResolver, CompetitionResolver, MatchResolver], [])
 
 const GET_COMPETITIONS = `
@@ -37,11 +40,91 @@ const GET_COMPETITIONS = `
   }
 `
 
+const GET_COMPETITION = `
+  query GetCompetitionById($competitionId: BigInt!) {
+    getCompetitionById(competitionId: $competitionId) {
+      id
+      name
+      shortname
+      start
+      matches {
+        rounds
+        name
+        results {
+          winner
+        }
+        player1 {
+          steamId
+          avatar
+          name
+          games
+          score
+        }
+        player2 {
+          steamId
+          avatar
+          name
+          games
+          score
+        }
+        start
+        results {
+          order
+          winner
+          details
+        }
+      }
+      players {
+        name
+        score
+        games
+        steamId
+        avatar
+      }
+    }
+  }
+`
+
+let server
+beforeEach(async () => {
+  server = await app.listen()
+})
+afterEach(async () => {
+  await server.close()
+})
+
 describe('Graphql Competitions Queries', () => {
-  it('Can respond correctly', async () => {
-    await request(app.getServer())
+  test('GetCompetitions', async () => {
+    const response = await request(app.getServer())
       .post('/graphql')
       .send({ query: GET_COMPETITIONS })
-      .expect(200, { data: { getCompetitions: [] } })
-  }, 20000)
+      .expect(200)
+
+    const getCompetitions: Competition[] = JSON.parse(response.text).data.getCompetitions
+
+    expect(getCompetitions.map(({ shortname, name }) => ({ shortname, name }))).toStrictEqual([
+      { shortname: 'XP', name: 'Expert Division' },
+      { shortname: 'GP', name: 'GP Division' },
+      { shortname: 'IM', name: 'Intermediate Division' },
+      { shortname: 'BN', name: 'Beginner Division' },
+    ])
+  })
+
+  test('GetCompetitionById', async () => {
+    const xp = await db.competition.findFirst({ where: { shortname: 'XP' } })
+
+    const response = await request(app.getServer())
+      .post('/graphql')
+      .send({
+        query: GET_COMPETITION,
+        operationName: 'GetCompetitionById',
+        variables: { competitionId: xp.id.toString() },
+      })
+      .expect(200)
+
+    const competition: Competition = JSON.parse(response.text).data.getCompetitionById
+
+    expect(competition.matches.length).toBe(66)
+    expect(competition.players.length).toBe(12)
+  })
 })

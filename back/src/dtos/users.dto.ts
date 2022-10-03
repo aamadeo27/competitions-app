@@ -1,5 +1,6 @@
-import { InputType, Field, Float } from 'type-graphql'
+import { InputType, Field } from 'type-graphql'
 import { User } from '@typedefs/users.type'
+import { BigIntResolver } from 'graphql-scalars'
 
 @InputType()
 export class UserDto implements Partial<User> {
@@ -12,7 +13,7 @@ export class UserDto implements Partial<User> {
   @Field()
   avatar?: string
 
-  @Field(() => Float)
+  @Field(() => BigIntResolver)
   competitionId?: bigint
 
   @Field()

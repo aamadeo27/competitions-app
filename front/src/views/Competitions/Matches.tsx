@@ -2,7 +2,7 @@ import { CalendarIcon, CheckCircleIcon, ClockIcon } from '@heroicons/react/24/ou
 import classNames from 'classnames'
 import { useReducer } from 'react'
 import Container from '../../components/Container'
-import { CompetitionMatch, RoundResult, User } from '../../generated/graphql'
+import { CompetitionMatch, RoundResult } from '../../generated/graphql'
 import { getTime } from '../../logic/utils'
 
 

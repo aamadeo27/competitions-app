@@ -37,10 +37,10 @@ class UserService {
   public async deleteUser(steamId: string): Promise<User> {
     if (isEmpty(steamId)) throw new HttpException(400, "User doesn't existId")
 
-    const findUser: User = await this.users.findUnique({ where: { id: steamId } })
+    const findUser: User = await this.users.findUnique({ where: { steamId } })
     if (!findUser) throw new HttpException(409, "User doesn't exist")
 
-    const deleteUserData = await this.users.delete({ where: { id: steamId } })
+    const deleteUserData = await this.users.delete({ where: { steamId } })
     return deleteUserData
   }
 }

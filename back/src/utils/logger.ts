@@ -20,6 +20,8 @@ const logFormat = winston.format.printf(
  * Log Level
  * error: 0, warn: 1, info: 2, http: 3, verbose: 4, debug: 5, silly: 6
  */
+const test = process.env.NODE_ENV === 'test'
+
 export const logger = winston.createLogger({
   format: winston.format.combine(
     winston.format.timestamp({
@@ -52,11 +54,12 @@ export const logger = winston.createLogger({
   ],
 })
 
-logger.add(
-  new winston.transports.Console({
-    format: winston.format.combine(winston.format.splat(), winston.format.colorize()),
-  }),
-)
+!test &&
+  logger.add(
+    new winston.transports.Console({
+      format: winston.format.combine(winston.format.splat(), winston.format.colorize()),
+    }),
+  )
 
 export const responseLogger = request => {
   const { query } = request.request

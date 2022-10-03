@@ -1,4 +1,5 @@
-import { Field, ID, Float, ObjectType } from 'type-graphql'
+import { BigIntResolver } from 'graphql-scalars'
+import { Field, ID, ObjectType } from 'type-graphql'
 
 @ObjectType()
 export class User {
@@ -11,7 +12,7 @@ export class User {
   @Field()
   avatar?: string
 
-  @Field(() => Float, { nullable: true })
+  @Field(() => BigIntResolver, { nullable: true })
   competitionId?: bigint
 
   @Field({ nullable: true })
