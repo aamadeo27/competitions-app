@@ -2,4 +2,4 @@
 
 cd back/
 cp .env.test.local .env
-npm run migrate:deploy
+npm run migrate:reset
