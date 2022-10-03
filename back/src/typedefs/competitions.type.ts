@@ -1,10 +1,11 @@
-import { Field, Float, ObjectType } from 'type-graphql'
+import { BigIntResolver } from 'graphql-scalars'
+import { Field, ObjectType } from 'type-graphql'
 import { CompetitionMatch } from './competition-matches.type'
 import { User } from './users.type'
 
 @ObjectType()
 export class Competition {
-  @Field(() => Float)
+  @Field(() => BigIntResolver)
   id: bigint
 
   @Field()

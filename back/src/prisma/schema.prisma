@@ -14,7 +14,7 @@ model User {
   steamId         String  @unique @id
   name            String  @unique
   avatar          String
-  competitionId   BigInt? @unique
+  competitionId   BigInt?
   discordId       String? @unique
   twitchId        String? @unique
 }

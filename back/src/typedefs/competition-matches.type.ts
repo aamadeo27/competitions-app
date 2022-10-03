@@ -1,13 +1,14 @@
-import { Field, Float, ObjectType } from 'type-graphql'
+import { BigIntResolver } from 'graphql-scalars'
+import { Field, ObjectType } from 'type-graphql'
 import { RoundResult } from './round-results.type'
 import { User } from './users.type'
 
 @ObjectType()
 export class CompetitionMatch {
-  @Field(() => Float)
+  @Field(() => BigIntResolver)
   id: bigint
 
-  @Field(() => Float)
+  @Field(() => BigIntResolver)
   competitionId: bigint
 
   @Field()
