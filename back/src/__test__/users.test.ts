@@ -10,11 +10,13 @@ const userData = {
   ...steamInfo,
 }
 
-class MockSteamService {
-  public getSteamInfo = jest.fn(() => steamInfo)
-}
-
-jest.mock('../services/steam.service', () => MockSteamService)
+jest.mock(
+  '../services/steam.service',
+  () =>
+    class MockSteamService {
+      public getSteamInfo = jest.fn(() => steamInfo)
+    },
+)
 
 const userSvc = new UserService()
 
