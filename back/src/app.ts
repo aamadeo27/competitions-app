@@ -7,7 +7,7 @@ import { ApolloServer } from 'apollo-server-express'
 import compression from 'compression'
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
-import express from 'express'
+import express, { Request } from 'express'
 import helmet from 'helmet'
 import hpp from 'hpp'
 import { buildSchema } from 'type-graphql'
@@ -83,9 +83,11 @@ class App {
           ? ApolloServerPluginLandingPageProductionDefault({ footer: false })
           : ApolloServerPluginLandingPageLocalDefault({ footer: false }),
       ],
-      context: async () => {
+      context: async ({ req }: { req: Request }) => {
         try {
-          const user = await authMiddleware()
+          const user = await authMiddleware(req)
+
+          logger.info('User: ' + user)
 
           return { user }
         } catch (error) {

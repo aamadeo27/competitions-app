@@ -1,4 +1,4 @@
-import { Arg, FieldResolver, Mutation, Query, Resolver, Root } from 'type-graphql'
+import { Arg, Authorized, FieldResolver, Mutation, Query, Resolver, Root } from 'type-graphql'
 import { BigIntResolver } from 'graphql-scalars'
 import { CreateCompetitionMatchDto } from '@dtos/competition-matches.dto'
 import CompetitionMatchRepository from '@repositories/competition-matches.repository'
@@ -35,6 +35,7 @@ export class MatchResolver {
     return match
   }
 
+  @Authorized('ADMIN')
   @Mutation(() => CompetitionMatch, {
     description: 'CompetitionMatch create',
   })
@@ -45,6 +46,7 @@ export class MatchResolver {
     return match
   }
 
+  @Authorized('ADMIN')
   @Mutation(() => CompetitionMatch, {
     description: 'CompetitionMatch update',
   })
@@ -56,6 +58,7 @@ export class MatchResolver {
     return match
   }
 
+  @Authorized('ADMIN')
   @Mutation(() => CompetitionMatch, {
     description: 'CompetitionMatch delete',
   })
