@@ -1,4 +1,4 @@
-import { Arg, FieldResolver, Mutation, Query, Resolver, Root } from 'type-graphql'
+import { Arg, Authorized, FieldResolver, Mutation, Query, Resolver, Root } from 'type-graphql'
 import { CreateCompetitionDto } from '@dtos/competitions.dto'
 import CompetitionRepository from '@repositories/competitions.repository'
 import { Competition } from '@typedefs/competitions.type'
@@ -29,6 +29,7 @@ export class CompetitionResolver extends CompetitionRepository {
     return competition
   }
 
+  @Authorized('ADMIN')
   @Mutation(() => Competition, {
     description: 'Competition create',
   })
@@ -39,6 +40,7 @@ export class CompetitionResolver extends CompetitionRepository {
     return competition
   }
 
+  @Authorized('ADMIN')
   @Mutation(() => Competition, {
     description: 'Competition update',
   })
@@ -50,6 +52,7 @@ export class CompetitionResolver extends CompetitionRepository {
     return competition
   }
 
+  @Authorized('ADMIN')
   @Mutation(() => Competition, {
     description: 'Competition delete',
   })

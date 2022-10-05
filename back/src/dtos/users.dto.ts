@@ -7,19 +7,19 @@ export class UserDto implements Partial<User> {
   @Field()
   steamId: string
 
-  @Field()
+  @Field({ nullable: true })
   name?: string
 
-  @Field()
+  @Field({ nullable: true })
   avatar?: string
 
-  @Field(() => BigIntResolver)
+  @Field(() => BigIntResolver, { nullable: true })
   competitionId?: bigint
 
-  @Field()
+  @Field({ nullable: true })
   discordId?: string
 
-  @Field()
+  @Field({ nullable: true })
   twitchId?: string
 }
 

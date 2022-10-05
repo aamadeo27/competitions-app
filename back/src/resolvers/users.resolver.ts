@@ -3,6 +3,7 @@ import {
   Arg,
   Args,
   ArgsType,
+  Authorized,
   Field,
   FieldResolver,
   Mutation,
@@ -52,6 +53,7 @@ export class UserResolver {
     return users
   }
 
+  @Authorized('ADMIN')
   @Mutation(() => User, {
     description: 'User update',
   })
@@ -60,6 +62,7 @@ export class UserResolver {
     return user
   }
 
+  @Authorized('ADMIN')
   @Mutation(() => User, {
     description: 'User delete',
   })
