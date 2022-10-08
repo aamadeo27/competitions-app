@@ -8,7 +8,7 @@ const uiController = (req: Request, res: Response) => {
   res.sendFile(path.join(root, 'public/index.html'))
 }
 
-const restricted = ['/', '/calendar', '/match']
+const restricted = ['/', '/calendar', '/match', '/divisions/*']
 const open = ['/login']
 
 class UIRoute implements Routes {

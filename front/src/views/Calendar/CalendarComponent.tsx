@@ -2,8 +2,6 @@ import FullCalendar from '@fullcalendar/react'
 import daygridPlugin from '@fullcalendar/daygrid'
 import timegridPlugin from '@fullcalendar/timegrid'
 
-import Curtain from '../../components/Curtain'
-
 function Timecell(){
   return <div className='h-10'>
 
@@ -25,18 +23,29 @@ export default function Calendar() {
   const scrollTime = now.toTimeString().split(' ')[0]
 
   return (
-    <div className='h-5/6'>
+    <div className='h-5/6 bg-black/80 rounded-3xl'>
       <div className={mainClass}>
-        <Curtain classes={'opacity-60'}/>
         <div className='px-5 py-5 text-white absolute top-0 left-0 h-fit w-full z-3'>
           <FullCalendar
+            dayHeaderClassNames="text-black bg-white"
+            dayCellClassNames="border-gray-300"
+            viewClassNames="text-black bg-white"
+            customButtons={{
+              myCustomButton: {
+                text: 'custom!',
+                click: function() {
+                  alert('clicked the custom button!')
+                }
+              }
+            }}
+            allDaySlot={false}
             scrollTime={scrollTime}
             plugins={[ timegridPlugin, daygridPlugin]}
             initialView='timeGridWeek'
-            slotLaneClassNames='bg-white-200'
             weekends
             slotDuration={{ hours: 1 }}
             selectable
+            slotLaneClassNames="border-gray-300"
             slotLaneContent={Timecell}
             events={events}
             height='75vh'

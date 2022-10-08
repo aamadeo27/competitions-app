@@ -19,6 +19,7 @@ class AuthRoute implements Routes {
         res.redirect('/')
       },
     )
+
     this.router.get(`${this.path}/`, this.authService.steam, (req: Request, res: Response) => {
       res.redirect('/')
     })

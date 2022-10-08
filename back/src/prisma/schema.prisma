@@ -63,6 +63,7 @@ model TimeFrame {
   start       Int
   end         Int
 
-  valid_since DateTime?
-  valid_until DateTime?
+  canPlay    Boolean
+  validSince DateTime?
+  validUntil DateTime?
 }

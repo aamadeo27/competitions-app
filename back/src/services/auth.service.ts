@@ -59,6 +59,7 @@ export default class AuthService {
         { session: false, failureRedirect: '/login', successRedirect: '/' },
         async (error, user) => {
           if (error) {
+            logger.error(error)
             return next(new HttpException(500, `Error in authentication:`))
           }
 
