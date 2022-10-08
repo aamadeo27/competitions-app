@@ -17,6 +17,8 @@ model User {
   competitionId   BigInt?
   discordId       String? @unique
   twitchId        String? @unique
+
+  availability    TimeFrame[]
 }
 
 model Token {
@@ -50,4 +52,18 @@ model RoundResult {
   order     Int 
   winner    String
   details   String
+}
+
+model TimeFrame {
+  userId      String
+  user        User    @relation(fields: [userId], references: [steamId])
+  id          BigInt  @id @default(autoincrement())
+  description String?
+  days        String
+  start       Int
+  end         Int
+
+  canPlay    Boolean
+  validSince DateTime?
+  validUntil DateTime?
 }

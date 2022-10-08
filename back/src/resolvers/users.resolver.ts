@@ -15,6 +15,7 @@ import { UserDto } from '@dtos/users.dto'
 import UserRepository from '@repositories/users.repository'
 import { User } from '@typedefs/users.type'
 import RoundResultRepository from '@/repositories/result.repository'
+import TimeFrameRepository from '@/repositories/time-frame.repository'
 
 @ArgsType()
 class GetUsersInCompetitionArgs {
@@ -26,6 +27,7 @@ class GetUsersInCompetitionArgs {
 export class UserResolver {
   private userRepository = new UserRepository()
   private resultRepository = new RoundResultRepository()
+  private timeFrameRepository = new TimeFrameRepository()
 
   @Query(() => [User], {
     description: 'User find list',
@@ -79,5 +81,10 @@ export class UserResolver {
   @FieldResolver()
   async games(@Root() u: User) {
     return await this.resultRepository.gamesOfPlayer(u.steamId)
+  }
+
+  @FieldResolver()
+  async availability(@Root() u: User) {
+    return (await this.timeFrameRepository.userTimeFrames(u.steamId)) ?? []
   }
 }
