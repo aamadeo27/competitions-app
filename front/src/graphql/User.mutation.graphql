@@ -1,0 +1,5 @@
+mutation UpdateUser($userData: UserDto!) {
+  updateUser(userData: $userData) {
+    steamId
+  }
+}

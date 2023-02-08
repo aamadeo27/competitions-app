@@ -3,7 +3,7 @@ import { HttpException } from '@exceptions/HttpException'
 import { User } from '@interfaces/users.interface'
 import { isEmpty } from '@utils/util'
 import { PrismaClient } from '@prisma/client'
-import { logger } from '@utils/logger'
+import { pick } from 'lodash'
 
 const prisma = new PrismaClient()
 
@@ -46,11 +46,11 @@ export default class UserRepository {
     if (isEmpty(userData)) throw new HttpException(400, 'userData is empty')
 
     const findUser: User = await prisma.user.findUnique({ where: { steamId: userData.steamId } })
-    if (findUser) throw new HttpException(409, `This steam id ${userData.steamId} already exists`)
 
-    logger.info('Dummy update user')
-
-    return findUser
+    return await prisma.user.update({
+      where: { steamId: userData.steamId },
+      data: pick,
+    })
   }
 
   public async userDelete(steamId: string): Promise<User> {

@@ -9,7 +9,7 @@ export class TimeFrame {
   @Field(() => BigIntResolver)
   id: bigint
 
-  @Field()
+  @Field({ nullable: true })
   description?: string
 
   @Field()
@@ -24,9 +24,9 @@ export class TimeFrame {
   @Field()
   canPlay: boolean
 
-  @Field()
+  @Field({ nullable: true })
   validSince?: Date
 
-  @Field()
+  @Field({ nullable: true })
   validUntil?: Date
 }

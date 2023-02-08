@@ -16,6 +16,7 @@ import UserRepository from '@repositories/users.repository'
 import { User } from '@typedefs/users.type'
 import RoundResultRepository from '@/repositories/result.repository'
 import TimeFrameRepository from '@/repositories/time-frame.repository'
+import CompetitionMatchRepository from '@/repositories/competition-matches.repository'
 
 @ArgsType()
 class GetUsersInCompetitionArgs {
@@ -28,6 +29,7 @@ export class UserResolver {
   private userRepository = new UserRepository()
   private resultRepository = new RoundResultRepository()
   private timeFrameRepository = new TimeFrameRepository()
+  private matchesRepository = new CompetitionMatchRepository()
 
   @Query(() => [User], {
     description: 'User find list',
@@ -86,5 +88,10 @@ export class UserResolver {
   @FieldResolver()
   async availability(@Root() u: User) {
     return (await this.timeFrameRepository.userTimeFrames(u.steamId)) ?? []
+  }
+
+  @FieldResolver()
+  async matches(@Root() u: User) {
+    return (await this.matchesRepository.matchFindByUserId(u.steamId)) ?? []
   }
 }

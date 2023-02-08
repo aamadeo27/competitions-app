@@ -6,26 +6,30 @@ import './App.css'
 import Login from './views/Login'
 import Profile from './views/Profile'
 import { ApiWrapper } from './logic/client'
-import Logout from './components/Logout'
+import ProfileDropdown from './components/ProfileDropdown'
 import Competitions from './views/Competitions'
 import CompetitionPage from './views/Competitions/CompetitionPage'
+import { ModalWrapper } from './modals/modals'
+import { ApolloSandbox } from '@apollo/sandbox/react'
 
 function getContentRoute(page: React.ReactNode, path: string ) {
   const element = 
     <ApiWrapper loading={null}>
-      <div className='grid grid-cols-4 bg-gray-300 h-full w-[1400px]'>
-        <div className='absolute z-0 w-full h-96 overflow-hidden'>
-          <img 
-            src='/img/banner.png'
-            className='w-fit'
-          />
+      <ModalWrapper>
+        <div className='grid grid-cols-4 bg-gray-300 f-fit pb-10 min-h-[100vh] w-[1400px] rounded-b-3xl'>
+          <div className='absolute z-0 w-full h-96 overflow-hidden'>
+            <img 
+              src='/img/banner.png'
+              className='w-fit'
+            />
+          </div>
+          <ProfileDropdown />
+          <MenuBar />
+          <div className='col-span-3 z-10'>
+            {page}
+          </div>
         </div>
-        <Logout />
-        <MenuBar />
-        <div className='col-span-3 z-10'>
-          {page}
-        </div>
-      </div>
+      </ModalWrapper>
     </ApiWrapper>
   return <Route {...{path, element}} />
 }
@@ -50,15 +54,23 @@ export default function Dashboard() {
               <Route path='/login'
                 element={login}/>
               {getContentRoute(<Profile />, '/')}
+              <Route path='/profile'>
+                {getContentRoute(<Profile />, '/profile/:id')}
+              </Route>
               {getContentRoute(<Calendar />, '/calendar')}
               {getContentRoute(<CurrentMatch />, '/match')}
               <Route path='/divisions'>
                 {getContentRoute(<Competitions />, '/divisions')}
                 {getContentRoute(<CompetitionPage />, '/divisions/:id')}
               </Route>
-              
               {getContentRoute(<CurrentMatch />, '/configurations')}
-
+              <Route path='/sandbox' element={
+                <ApolloSandbox
+                  initialEndpoint='http://localhost:3000/graphql'
+                  includeCookies={true}
+                  className='h-full'
+                />} 
+              />
             </Routes>
           </div>            
         </BrowserRouter>

@@ -67,3 +67,17 @@ model TimeFrame {
   validSince DateTime?
   validUntil DateTime?
 }
+
+enum ChallengeStatus {
+  ACCEPTED
+  DECLINED
+  PENDING
+}
+
+model Challenge {
+  id            BigInt @id @default(autoincrement())
+  challenger    String
+  challenged    String
+  start         DateTime
+  status        ChallengeStatus
+}

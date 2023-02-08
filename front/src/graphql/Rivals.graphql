@@ -1,0 +1,12 @@
+query GetRivals($competitionId: BigInt!) {
+  getCompetitionById(competitionId: $competitionId) {
+    id
+    players {
+      name
+      steamId
+      avatar
+      games
+      score
+    }
+  }
+}

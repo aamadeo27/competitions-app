@@ -1,0 +1,13 @@
+mutation UpdateTimeFrame($id: BigInt!, $data: TimeFrameDto!) {
+  updateTimeFrame(id: $id, data: $data) {
+    userId
+    id
+    description
+    days
+    start
+    end
+    canPlay
+    validSince
+    validUntil
+  }
+}

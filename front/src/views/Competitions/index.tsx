@@ -4,7 +4,7 @@ import Header from '../../components/Header'
 import Loading from '../../components/Loading'
 import { Competition } from '../../generated/graphql'
 import CompetitionItem from './CompetitionItem'
-import { competitionsQuery } from './graphql'
+import { competitionsQuery } from '../../graphql'
 
 
 export default function Competitions() {

@@ -25,6 +25,17 @@ export class MatchResolver {
     return matches
   }
 
+  @Query(() => [CompetitionMatch], {
+    description: 'CompetitionMatch list by date range',
+  })
+  async getCompetitionMatchesInDateRange(
+    @Arg('start') start: Date,
+    @Arg('end') end: Date,
+  ): Promise<CompetitionMatch[]> {
+    const matches: CompetitionMatch[] = await this.matchRepository.mathchesInDateRange(start, end)
+    return matches
+  }
+
   @Query(() => CompetitionMatch, {
     description: 'CompetitionMatch find by id',
   })

@@ -23,6 +23,8 @@ class UserService {
   }
 
   public async connect(userData: CreateUserDto): Promise<User> {
+    console.log(userData)
+
     if (isEmpty(userData)) throw new HttpException(400, 'userData is empty')
     const { steamId } = userData
 

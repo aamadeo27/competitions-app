@@ -14,4 +14,10 @@ const errorMiddleware = (error: HttpException, req: Request, res: Response, next
   }
 }
 
+export const GRAPHQL_CODES = {
+  '409': 'NOT_FOUND',
+  '401': 'NOT_AUTHORIZED',
+  '400': 'BAD_REQUEST',
+}
+
 export default errorMiddleware

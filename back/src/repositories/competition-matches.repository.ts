@@ -13,6 +13,37 @@ export default class CompetitionMatchRepository {
     return matches
   }
 
+  public async mathchesInDateRange(start: Date, end: Date): Promise<CompetitionMatch[]> {
+    return await prisma.competitionMatch.findMany({
+      where: {
+        AND: [
+          {
+            start: {
+              gte: start,
+            },
+          },
+          {
+            start: {
+              lt: end,
+            },
+          },
+        ],
+      },
+    })
+  }
+
+  public async matchFindByUserId(userId: string): Promise<CompetitionMatch[]> {
+    if (isEmpty(userId)) throw new HttpException(400, 'id is empty')
+
+    const matches: CompetitionMatch[] = await prisma.competitionMatch.findMany({
+      where: {
+        OR: [{ competitor1: userId }, { competitor2: userId }],
+      },
+    })
+
+    return matches
+  }
+
   public async matchFindById(id: bigint): Promise<CompetitionMatch> {
     if (isEmpty(id)) throw new HttpException(400, 'id is empty')
 

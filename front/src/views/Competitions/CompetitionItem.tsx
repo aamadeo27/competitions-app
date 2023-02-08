@@ -3,16 +3,10 @@ import classNames from 'classnames'
 import { Link } from 'react-router-dom'
 import { Competition, CompetitionMatch, User } from '../../generated/graphql'
 import { getTime } from '../../logic/utils'
+import CompetitionHeader from './CompetitionHeader'
 
 type Props = {
   data: Competition
-}
-
-const COLOR_MAP : Record<string, string>= {
-  XP: 'bg-xp',
-  GP: 'bg-gp',
-  IM: 'bg-im',
-  BN: 'bg-bn'
 }
 
 const WEEK_IN_MS = 604800000
@@ -115,21 +109,13 @@ function NextMatch({ data }: { data?: CompetitionMatch }) {
 const ordinal = [null, '1st','2nd','3rd']
 
 export default function CompetitionItem ({ data }: Props) {
-  const logoClasses = classNames(
-    'h-16 w-16 rounded-full mt-6 text mx-2',
-    data?.shortname && COLOR_MAP[data.shortname],
-  )
-
   const weekNum = week(data)
 
   return (
-    <div className='mb-4 text-gray-700 font-semibold bg-white w-full rounded-xl h-28 flex flex-row divide-x overflow-hidden'>
-      <Link to={`/divisions/${data?.id}`}>
-        <div className='flex flex-row h-full w-56'>
-          <div className={logoClasses}>
-            <span className='block px-3.5 py-3 text-3xl text-gray-200'>{data?.shortname}</span>
-          </div>
-          <span className='block text-xl text-gray-900 h-fit my-auto'>{data?.name}</span>
+    <div className='mb-4 text-gray-700 font-semibold bg-white w-full rounded-xl h-fit flex flex-row divide-x overflow-hidden'>
+      <Link to={`/divisions/${data.id}`}>
+        <div className='w-56'>
+          <CompetitionHeader shortname={data.shortname} name={data.name}/>
         </div>
       </Link>
 

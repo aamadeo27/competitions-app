@@ -1,0 +1,13 @@
+mutation CreateTimeFrame($data: TimeFrameDto!) {
+  createTimeFrame(data: $data) {
+    userId
+    id
+    description
+    days
+    start
+    end
+    canPlay
+    validSince
+    validUntil
+  }
+}

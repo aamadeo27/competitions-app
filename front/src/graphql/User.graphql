@@ -1,0 +1,52 @@
+query GetUserById($userId: String!) {
+  getUserById(userId: $userId) {
+    steamId
+    discordId
+    twitchId
+    name
+    avatar
+    score
+    games
+    competitionId
+    matches {
+      id
+      competitionId
+      phase
+      name
+      rounds
+      player1 {
+        steamId
+        name
+        avatar
+        score
+        games
+      }
+      player2 {
+        steamId
+        name
+        avatar
+        score
+        games
+      }
+      start
+      end
+      results {
+        id
+        order
+        winner
+        details
+      }
+    }
+    availability {
+      userId
+      id
+      days
+      description
+      start
+      end
+      canPlay
+      validSince
+      validUntil
+    }
+  }
+}
