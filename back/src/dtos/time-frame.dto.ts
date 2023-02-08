@@ -1,12 +1,13 @@
 import { TimeFrame } from '@/typedefs/time-frame.type'
+import { BigIntResolver } from 'graphql-scalars'
 import { InputType, Field } from 'type-graphql'
 
 @InputType()
-export class CreateTimeFrameDto implements Partial<TimeFrame> {
+export class TimeFrameDto implements Partial<TimeFrame> {
   @Field()
   userId: string
 
-  @Field()
+  @Field({ nullable: true })
   description?: string
 
   @Field()
@@ -21,9 +22,9 @@ export class CreateTimeFrameDto implements Partial<TimeFrame> {
   @Field()
   canPlay: boolean
 
-  @Field()
+  @Field({ nullable: true })
   validSince?: Date
 
-  @Field()
+  @Field({ nullable: true })
   validUntil?: Date
 }

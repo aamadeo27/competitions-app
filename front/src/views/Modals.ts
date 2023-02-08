@@ -1,2 +1,2 @@
 
-export type ModalName = 'availability' | 'challenge' | null
+export type ModalName = 'calendar-matches' | 'challenge' | null

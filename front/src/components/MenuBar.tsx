@@ -10,19 +10,26 @@ type Props = {
   path: string
   icon: React.ComponentType<{ className: string }>
   active?: boolean
+  colorClasses?: string
 }
-function MenuButton({ label, path, icon, active }: Props) {
+function MenuButton({ label, path, icon, active, colorClasses = 'stroke-white' }: Props) {
   const itemClass = classNames(
     'block py-1.5 w-full',
     { 'bg-gray-800 rounded-3xl': active }
   )
   const IconElement = icon
+  const classes = classNames(
+    colorClasses,
+    'ml-4 inline-block h-6 w-6'
+  )
+
+
   return <li className='w-full'>
     <Link 
       to={path}
       className={itemClass}
     >
-      <IconElement className='ml-4 inline-block h-6 w-6 stroke-white'/>
+      <IconElement className={classes}/>
       {typeof label === 'string'
         ? <span className='ml-3'>{label}</span>
         : label
@@ -56,6 +63,7 @@ export default function MenuBar(){
           path='/match'
           icon={SwordIcon}
           label='Match'
+          colorClasses='fill-white'
           active={location.pathname === '/match'}
         />
         <MenuButton

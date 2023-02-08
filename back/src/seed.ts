@@ -4,6 +4,8 @@ import { CompetitionMatch, PrismaClient } from '@prisma/client'
 import { logger } from './utils/logger'
 import UserService from './services/users.service'
 
+const db = new PrismaClient()
+
 /*
 Creates users
 Creates competitions
@@ -15,6 +17,13 @@ Creates results
 
 const players = [
   {
+    steamId: '76561199087990682',
+    name: '[WOA] efffdis - afk',
+    avatar:
+      'https://avatars.akamai.steamstatic.com/077b8cb8077f09dd8d7e346a1d617bfc26859bb5_full.jpg',
+    competitionId: { $oid: '633096daa34af58cc342e28f' },
+  },
+  {
     steamId: '76561198198726327',
     name: 'Tôn Hành Giả',
     avatar:
@@ -22,7 +31,6 @@ const players = [
     competitionId: { $oid: '633096daa34af58cc342e28f' },
   },
   {
-    _id: { $oid: '633096e1a34af58cc342e295' },
     steamId: '76561199036207741',
     name: '[KGB] NetQuaker',
     avatar:
@@ -30,7 +38,6 @@ const players = [
     competitionId: { $oid: '633096daa34af58cc342e28f' },
   },
   {
-    _id: { $oid: '633096e2a34af58cc342e296' },
     steamId: '76561198291928937',
     name: 'mrmorec',
     avatar:
@@ -38,7 +45,6 @@ const players = [
     competitionId: { $oid: '633096daa34af58cc342e28f' },
   },
   {
-    _id: { $oid: '633096e3a34af58cc342e297' },
     steamId: '76561198998053432',
     name: '[LGND] BuBzZz',
     avatar:
@@ -46,7 +52,6 @@ const players = [
     competitionId: { $oid: '633096daa34af58cc342e28f' },
   },
   {
-    _id: { $oid: '633096e4a34af58cc342e298' },
     steamId: '76561198109810375',
     name: 'HSTL | hoh0dfx',
     avatar:
@@ -54,7 +59,6 @@ const players = [
     competitionId: { $oid: '633096daa34af58cc342e28f' },
   },
   {
-    _id: { $oid: '633096e5a34af58cc342e299' },
     steamId: '76561198003626909',
     name: 'SoiGia',
     avatar:
@@ -62,7 +66,6 @@ const players = [
     competitionId: { $oid: '633096daa34af58cc342e28f' },
   },
   {
-    _id: { $oid: '633096e6a34af58cc342e29a' },
     steamId: '76561198877188659',
     name: '_MIB_Maverick',
     avatar:
@@ -70,7 +73,6 @@ const players = [
     competitionId: { $oid: '633096daa34af58cc342e28f' },
   },
   {
-    _id: { $oid: '633096e7a34af58cc342e29b' },
     steamId: '76561198985123908',
     name: 'VerteX',
     avatar:
@@ -78,7 +80,6 @@ const players = [
     competitionId: { $oid: '633096daa34af58cc342e28f' },
   },
   {
-    _id: { $oid: '633096e8a34af58cc342e29c' },
     steamId: '76561198932556971',
     name: '[KGB] blackwoltz',
     avatar:
@@ -86,7 +87,6 @@ const players = [
     competitionId: { $oid: '633096daa34af58cc342e28f' },
   },
   {
-    _id: { $oid: '633096e9a34af58cc342e29d' },
     steamId: '76561198130780391',
     name: '[SH] Alligator',
     avatar:
@@ -94,7 +94,6 @@ const players = [
     competitionId: { $oid: '633096daa34af58cc342e28f' },
   },
   {
-    _id: { $oid: '633096eaa34af58cc342e29e' },
     steamId: '76561198255592963',
     name: 'Karim Benzema',
     avatar:
@@ -102,7 +101,6 @@ const players = [
     competitionId: { $oid: '633096daa34af58cc342e28f' },
   },
   {
-    _id: { $oid: '633096eba34af58cc342e29f' },
     steamId: '76561198272400369',
     name: 'twitch.tv/iberhobbit',
     avatar:
@@ -118,7 +116,6 @@ const competitions = [
   { name: 'Beginner Division', shortname: 'BN' },
 ]
 
-const db = new PrismaClient()
 const createCompetitions = async () => {
   const competitionRepo = new CompetitionRepository()
   let xp
@@ -135,12 +132,46 @@ const createCompetitions = async () => {
   return xp
 }
 
+async function createAvailability(userId: string, timezone: number) {
+  await db.timeFrame.createMany({
+    data: [
+      {
+        userId,
+        days: 'mtwTf',
+        start: 18 + timezone,
+        end: 23 + timezone,
+        canPlay: true,
+      },
+      {
+        userId,
+        days: 'sS',
+        start: 9 + timezone,
+        end: 13 + timezone,
+        canPlay: true,
+      },
+      {
+        userId,
+        days: 'sS',
+        start: 16 + timezone,
+        end: 20 + timezone,
+        canPlay: true,
+      },
+    ],
+  })
+}
+
+const tz = () => [-3, 0, 3][Math.floor(Math.random() * 3)]
+
 const userSvc = new UserService()
 const createUsers = async (competitionId: bigint) => {
   for (let i = 0; i < players.length; i++) {
     const { steamId, name, avatar } = players[i]
+    const timezone = tz()
     logger.info(`\tAdding ${name} -> ${competitionId}`)
+
     await userSvc.connect({ steamId, competitionId, name, avatar })
+
+    await createAvailability(steamId, timezone)
   }
 }
 
@@ -151,6 +182,8 @@ const createUsers = async (competitionId: bigint) => {
   await db.competitionMatch.deleteMany()
   logger.info('Deleting Competitions')
   await db.competition.deleteMany()
+  logger.info('Deleting Timeframes')
+  await db.timeFrame.deleteMany()
   logger.info('Deleting Users')
   await db.user.deleteMany()
 

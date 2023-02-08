@@ -25,7 +25,9 @@ export const UserWrapper = ({ children, loading }: Props) => {
   const [user, setUser] = useState<User>(null)
   const [fetching, setFetching] = useState(true)
 
-  const refresh = () => client?.get(urls.profileData).then( data => {
+  const refresh = () => client?.get(
+    `${urls.profileData}?${new Date().getTimezoneOffset()}`
+  ).then( data => {
     const { id, displayName: name, photos, realname } = data
     setUser({
       id,

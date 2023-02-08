@@ -2,14 +2,19 @@ import { AuthChecker } from 'type-graphql'
 import { HttpException } from '@exceptions/HttpException'
 import { Request } from 'express'
 
+import jwt from 'jsonwebtoken'
+import { auth } from '@/config'
+
 export const authMiddleware = async (req: Request) => {
   try {
-    const user = req['user']
+    const token = req.cookies['token']
+    const user = jwt.verify(token, auth.jwtSecret)
+
     if (!user) {
       return null
     }
 
-    const { id } = user
+    const { id } = user as { id: string }
 
     return { id }
   } catch (error) {
@@ -18,10 +23,8 @@ export const authMiddleware = async (req: Request) => {
 }
 
 export const authChecker: AuthChecker<Request> = async ({ context }) => {
-  console.log('User', context['user'])
-
   if (!context['user']) {
-    throw new HttpException(404, 'Authentication token missing')
+    throw new HttpException(401, 'Authentication token missing')
   }
 
   return true

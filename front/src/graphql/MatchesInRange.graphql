@@ -1,0 +1,30 @@
+query GetCompetitionMatchesInDateRange($end: DateTime!, $start: DateTime!) {
+  getCompetitionMatchesInDateRange(end: $end, start: $start) {
+    id
+    competitionId
+    phase
+    name
+    rounds
+    competitor1
+    competitor2
+    player1 {
+      steamId
+      name
+      avatar
+    }
+    player2 {
+      steamId
+      name
+      avatar
+    }
+    start
+    end
+    results {
+      id
+      matchId
+      order
+      winner
+      details
+    }
+  }
+}

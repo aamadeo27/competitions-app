@@ -1,26 +1,62 @@
-import * as Icons from '@heroicons/react/24/outline'
-import { ModalName } from '../Modals'
-
-const mainClass = 'h-1/6 p-3'
-
+import { UsersIcon } from '@heroicons/react/24/outline'
+import React from 'react'
+import Button from '../../components/Button'
+import Dropdown from '../../components/Dropdown'
+import SwordIcon from '../../components/icons/SwordIcon'
+import Tooltip from '../../components/Tooltip'
+import { User } from '../../generated/graphql'
+const mainClass = 'flex flex-row gap-5 my-5'
+type CalendarView = 'matches' | 'challenge'
 type Props = {
-  setModal: (m:ModalName) => void
+  setView: (v:CalendarView) => void
+  view: CalendarView
+  rivalId?: bigint
+  setRivalId: (id: bigint) => void
+  rivals: Pick<User,'steamId'|'avatar'|'name'>[]
 }
 
-export default function Toolbar({ setModal }: Props) {
-  const onClick = (modal: ModalName) => () => setModal(modal)
+export default function Toolbar({ setView, view, setRivalId, rivalId, rivals }: Props) {
+
+  const onClick = (v:CalendarView) => () => setView(v)
+
+  const displayClasses = 'flex-grow py-1'
+  const options = rivals.map(r => ({
+    value: r.steamId,
+    label: <>
+      <img src={r.avatar} className='h-10 w-10 rounded-full bg-gray-300 mr-2' />
+      <span className={displayClasses}>{r.name}</span>
+    </>
+  }))
+
+
+  const btn = (node: React.ReactNode, tooltip: string) => <div className='h-7 w-7 tooltip-target'>
+    <Tooltip content={tooltip} top='-top-10'/>
+    {node}
+  </div>
 
   return (
     <div className={mainClass}>
-      <div
-        className='rounded-3xl bg-stone-900 w-40 h-12 p-1 cursor-pointer'
-        onClick={onClick('availability')}
-      >
-        <Icons.ClockIcon className='m-1 h-8 w-8 stroke-zinc-200 inline-block'/>
-        <span className='text-zinc-200 text-sm inline-block font-bold'>
-          Set availability
-        </span>
-      </div>
+      <Button
+        onClick={onClick('challenge')}
+        label={btn(<UsersIcon />, 'Challenge')}
+        sizeClasses='w-fit p-4'
+      />
+
+      <Button
+        onClick={onClick('matches')}
+        label={btn(<SwordIcon className='fill-white'/>, 'Matches')}
+        sizeClasses='w-fit p-4'
+      />
+
+      {view === 'challenge' && <Dropdown 
+        value={rivalId}
+        placeholder={<span className={displayClasses}>Look for a Rival</span>}
+        options={options}
+        onSelect={setRivalId}
+        colorClasses='bg-gray-900'
+        sizeClasses='w-72 h-fit text-lg'
+        paddingClasses='pt-2 pb-1'
+      />}
     </div>
   )
 }

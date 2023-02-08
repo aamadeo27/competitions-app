@@ -1,6 +1,7 @@
 import { InputType, Field } from 'type-graphql'
 import { User } from '@typedefs/users.type'
 import { BigIntResolver } from 'graphql-scalars'
+import { TimeFrameDto } from './time-frame.dto'
 
 @InputType()
 export class UserDto implements Partial<User> {

@@ -27,7 +27,7 @@ class AuthRoute implements Routes {
     this.router.get(
       `${this.path}/profile`,
       this.authService.jwt(false),
-      (req: Request, res: Response) => {
+      async (req: Request<any, any, any, { tz: string }, any>, res: Response) => {
         const user = req['user']
         if (!user) {
           return res.status(401).json({ status: 'Unauthorized' })
@@ -39,6 +39,9 @@ class AuthRoute implements Routes {
           photos,
           _json: { profileurl, realname, loccountrycode },
         } = user
+
+        // Todo: Updating Timezone
+        // const timeZone = parseInt(req.query.tz, 10) / 60
 
         return res.json({ id, displayName, photos, profileurl, realname, loccountrycode })
       },

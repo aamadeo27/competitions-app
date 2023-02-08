@@ -17,6 +17,7 @@ import errorMiddleware from '@middlewares/error.middleware'
 import { logger, responseLogger, errorLogger } from '@utils/logger'
 import passport from 'passport'
 import { Routes } from '@interfaces/routes.interface'
+import { HttpException } from './exceptions/HttpException'
 
 class App {
   public app: express.Application
@@ -60,7 +61,7 @@ class App {
       this.app.use(helmet())
     }
 
-    this.app.use(cors({ origin: ORIGIN, credentials: CREDENTIALS }))
+    this.app.use(cors({ origin: [/^http:\/\/localhost:\d*/], credentials: CREDENTIALS }))
     this.app.use(compression())
     this.app.use(express.json())
     this.app.use(express.urlencoded({ extended: true }))
@@ -91,7 +92,7 @@ class App {
 
           return { user }
         } catch (error) {
-          throw new Error(error)
+          return null
         }
       },
       formatResponse: (response, request) => {
@@ -107,7 +108,13 @@ class App {
     })
 
     await apolloServer.start()
-    apolloServer.applyMiddleware({ app: this.app, cors: ORIGIN, path: '/graphql' })
+    apolloServer.applyMiddleware({
+      app: this.app,
+      cors: {
+        origin: ['http://localhost:5000', 'http://localhost:3000'],
+      },
+      path: '/graphql',
+    })
   }
 
   private initializeErrorHandling() {

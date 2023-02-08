@@ -2,7 +2,7 @@ import { HttpException } from '@exceptions/HttpException'
 import { isEmpty } from '@utils/util'
 import { PrismaClient } from '@prisma/client'
 import TimeFrame from '@/interfaces/time-frame.interface'
-import { CreateTimeFrameDto } from '@/dtos/time-frame.dto'
+import { TimeFrameDto } from '@/dtos/time-frame.dto'
 
 const prisma = new PrismaClient()
 
@@ -13,7 +13,7 @@ export default class TimeFrameRepository {
     return results
   }
 
-  public async timeFrameCreate(timeFrameData: CreateTimeFrameDto): Promise<TimeFrame> {
+  public async timeFrameCreate(timeFrameData: TimeFrameDto): Promise<TimeFrame> {
     if (isEmpty(timeFrameData)) throw new HttpException(400, 'timeFrameData is empty')
 
     const createTimeFrameData: TimeFrame = await prisma.timeFrame.create({ data: timeFrameData })
@@ -21,7 +21,7 @@ export default class TimeFrameRepository {
     return createTimeFrameData
   }
 
-  public async timeFrameUpdate(id: bigint, timeFrameData: CreateTimeFrameDto): Promise<TimeFrame> {
+  public async timeFrameUpdate(id: bigint, timeFrameData: TimeFrameDto): Promise<TimeFrame> {
     if (isEmpty(timeFrameData)) throw new HttpException(400, 'timeFrameData is empty')
 
     const findTimeFrame: TimeFrame = await prisma.timeFrame.findUnique({ where: { id } })

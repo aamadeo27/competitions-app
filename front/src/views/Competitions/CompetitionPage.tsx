@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom'
 import { useQuery } from '@apollo/client'
 import Header from '../../components/Header'
-import { competitionQuery } from './graphql'
+import { competitionQuery } from '../../graphql'
 import Ranking from './Ranking'
 import CompetitionNav, { CompetitionTab } from './CompetitionNav'
 import { useState } from 'react'
