@@ -2,20 +2,19 @@ import Button from '../components/Button'
 import * as Icons from '@heroicons/react/24/outline'
 import React, { useEffect, useState } from 'react'
 import classNames from 'classnames'
-import { useQuery } from '@apollo/client'
+import { useMutation, useQuery } from '@apollo/client'
 import { useUser } from '../logic/client'
 import type { Option } from '../components/Dropdown'
 import Dropdown from '../components/Dropdown'
-import { userQuery } from '../graphql'
+import { challengeCreate, challengeDelete, challengeUpdate, userQuery } from '../graphql'
 import { User } from '../generated/graphql'
 
 type Props = {
   close: () => void
   start: number
-  end: number
   challenger: User
   challenged: User
-  existing?: boolean
+  id?: bigint
 }
 
 const HOURS: Option[] = []
@@ -26,33 +25,48 @@ for (let i = 0 ; i < 24 ; i++) {
   })
 }
 
-export default function Challenge({ close, start, end, challenger, challenged, existing }: Props) {
+export default function Challenge({ close, start, challenger, challenged, id }: Props) {
+
   const userCtx = useUser()
   const [schedule, setSchedule] = useState(() =>({ 
-    start: new Date(start).getHours(),
-    end: new Date(end).getHours(),
+    start: new Date(start).getHours()
   }))
 
   const userResult = useQuery(userQuery, {
     variables: { userId: userCtx?.user?.id ?? '-1'},
   })
 
+  const [createChallenge] = useMutation(challengeCreate)
+  const [updateChallenge] = useMutation(challengeUpdate)
+  const [deleteChallenge] = useMutation(challengeDelete)
+
+  const newStart = new Date(start)
+  newStart.setHours(schedule.start)
+  const data = {
+    start: newStart,
+    challenger: challenger.steamId,
+    challenged: challenged.steamId,
+    status: 'PENDING',
+  }
+
+  const onCreate = () => createChallenge({ variables: { data } })
+  const onUpdate = () => updateChallenge({ variables: { id, data } })
+  const onConfirm = () => updateChallenge({ variables: { id, data: { status: 'ACCEPTED' }}})
 
   const user = userResult.data?.getUserById
   const userIsChallenging = user?.steamId === challenger.steamId
   const opponent = userIsChallenging ? challenged : challenger
-  const modified = existing && new Date(start).getHours() !== schedule.start
-  const btnLabel = !existing ? 'Challenge' : (modified ? 'Update' : 'Accept')
-  
-  useEffect(() => {
-    console.log('Data Refreshed', schedule)
-  },[userResult.data])
+  const modified = new Date(start).getHours() !== schedule.start
+  const btnLabel = !id ? 'Challenge' : (modified ? 'Update' : 'Accept')
+  const onAction = !id ? onCreate : (modified ? onUpdate : onConfirm)
+  const rejectLabel = userIsChallenging ? 'Delete' : 'Reject'
+  const onReject = () => deleteChallenge({ variables: { id }})
 
   if (!open) return null
 
   const MAIN_CLASSES = classNames(
     'relative mx-auto mt-16 p-12 rounded-3xl',
-    'bg-gray-900 h-fit w-fit min-w-modal',
+    'bg-gray-900 w-fit h-fit',
     'flex flex-col gap-10 text-gray-300'
   )
 
@@ -103,14 +117,32 @@ export default function Challenge({ close, start, end, challenger, challenged, e
         />
       </div>
 
-      <Button
-        colorClasses='bg-green-2'
-        onClick={() => close()}
-        label={btnLabel}
-        sizeClasses='h-fit w-fit text-xl rounded-full'
-        extraClasses='px-6 py-2'
-      />
+      <div className='flex flex-row gap-5'>
+        <>
+          {(!id || modified || !userIsChallenging) && <Button
+            colorClasses='bg-green-2'
+            onClick={() => {
+              onAction()
+              close()
+            }}
+            label={btnLabel}
+            sizeClasses='h-fit w-fit text-xl rounded-full'
+            extraClasses='px-6 py-2'
+          />}
 
+          {id && <Button
+            colorClasses='bg-red-500'
+            onClick={() => {
+              onReject()
+              close()
+            }}
+            label={rejectLabel}
+            sizeClasses='h-fit w-fit text-xl rounded-full'
+            extraClasses='px-6 py-2'
+          />}
+        </>
+      </div>
+        
       <Button
         onClick={() => close()}
         label={<Icons.XMarkIcon />}
@@ -118,6 +150,7 @@ export default function Challenge({ close, start, end, challenger, challenged, e
         sizeClasses='h-8 w-8'
         extraClasses='absolute top-5 right-5'
       />
+      
     </div>
   )
 }

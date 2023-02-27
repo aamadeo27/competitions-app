@@ -1,0 +1,9 @@
+mutation UpdateChallenge($id: BigInt!, $data: ChallengeDTO!) {
+  updateChallenge(id: $id, data: $data) {
+    id
+    challenger
+    challenged
+    start
+    status
+  }
+}

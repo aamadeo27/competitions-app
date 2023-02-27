@@ -7,11 +7,12 @@ import { MatchResolver } from '@resolvers/competition-matches.resolver'
 import { TimeFrameResolver } from './resolvers/timeframe.resolver'
 import AuthRoute from './routes/auth.route'
 import UIRoute from './routes/ui.route'
+import { ChallengeResolver } from './resolvers/challenge.resolver'
 
 validateEnv()
 
 const app = new App(
-  [UserResolver, CompetitionResolver, MatchResolver, TimeFrameResolver],
+  [UserResolver, CompetitionResolver, MatchResolver, TimeFrameResolver, ChallengeResolver],
   [new AuthRoute(), new UIRoute()],
 )
 

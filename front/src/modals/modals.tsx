@@ -7,8 +7,8 @@ const modals = {
   availability: (close: () => void) => <Availability close={close}/>,
   challenge: (close: () => void, data?: any) => 
     <Challenge
+      id={data.id}
       start={data.start}
-      end={data.end} 
       close={close}
       challenger={data.challenger}
       challenged={data.challenged}

@@ -39,23 +39,23 @@ export default class ChallengeRepository {
     const findChallenge: Challenge = await prisma.challenge.findFirst({
       where: { challenger, challenged },
     })
-    if (findChallenge) throw new HttpException(409, `This id ${challengeData.id} already exists`)
+    if (findChallenge) throw new HttpException(409, `This challenge already exists`)
 
     const createChallengeData: Challenge = await prisma.challenge.create({ data: challengeData })
 
     return createChallengeData
   }
 
-  public async challengeUpdate(challengeData: ChallengeDTO): Promise<Challenge> {
+  public async challengeUpdate(id: bigint, challengeData: ChallengeDTO): Promise<Challenge> {
     if (isEmpty(challengeData)) throw new HttpException(400, 'challengeData is empty')
 
     return await prisma.challenge.update({
-      where: { id: challengeData.id },
-      data: pick,
+      where: { id },
+      data: challengeData,
     })
   }
 
-  public async challengeDelete(id: number): Promise<Challenge> {
+  public async challengeDelete(id: bigint): Promise<Challenge> {
     if (isEmpty(id)) throw new HttpException(400, 'Invalid id to delete Challenge')
 
     const findChallenge: Challenge = await prisma.challenge.findUnique({ where: { id } })

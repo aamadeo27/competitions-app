@@ -1,0 +1,9 @@
+mutation CreateChallenge($data: ChallengeDTO!) {
+  createChallenge(data: $data) {
+    id
+    challenger
+    challenged
+    start
+    status
+  }
+}

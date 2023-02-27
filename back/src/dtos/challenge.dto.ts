@@ -1,13 +1,9 @@
 import { InputType, Field } from 'type-graphql'
-import { Challenge } from '@typedefs/challenge.type'
-import { BigIntResolver } from 'graphql-scalars'
+import { Challenge, ChallengeStatusScalar } from '@typedefs/challenge.type'
 import { ChallengeStatus } from '@prisma/client'
 
 @InputType()
 export class ChallengeDTO implements Partial<Challenge> {
-  @Field(() => BigIntResolver)
-  id: bigint
-
   @Field()
   challenger: string
 
@@ -17,6 +13,6 @@ export class ChallengeDTO implements Partial<Challenge> {
   @Field()
   start: Date
 
-  @Field()
+  @Field(() => ChallengeStatusScalar)
   status: ChallengeStatus
 }

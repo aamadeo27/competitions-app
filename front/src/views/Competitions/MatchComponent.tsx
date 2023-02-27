@@ -25,7 +25,8 @@ type PlayerBoxProps = {
   player: 'p1' | 'p2'
 }
 
-const LINE = <div className='w-[1px] h-full mx-2 bg-gray-400'></div>
+const LINE = <div className='w-[1px] h-full mx-2 bg-gray-400'>
+</div>
 
 const midBoxesClasses = (box: keyof typeof midBoxesSizes, played: boolean) =>  classNames(
   'flex flex-col white',
@@ -95,8 +96,6 @@ function ShortMatchComponent({ data, ranking }: MatchProps) {
     wins(data.results as RoundResult[], data.player1.steamId),
     wins(data.results as RoundResult[], data.player2.steamId),
   ]
-
-  const result = points[0] > points[1] ? 'lost' : (points[0] < points[1] ? 'won' : 'tied')
 
   return (
     <div className={containerClasses}>

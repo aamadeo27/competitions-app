@@ -9,7 +9,7 @@ import { competitionsQuery } from '../../graphql'
 
 export default function Competitions() {
 
-  const { data, error, loading } = useQuery(competitionsQuery)
+  const { data, loading } = useQuery(competitionsQuery)
 
   const competitions = data?.getCompetitions?.map((competition: Competition) => 
     <CompetitionItem

@@ -14,7 +14,24 @@ export type Scalars = {
   Int: number;
   Float: number;
   BigInt: any;
+  ChallengeStatus: any;
   DateTime: any;
+};
+
+export type Challenge = {
+  __typename?: 'Challenge';
+  challenged: Scalars['String'];
+  challenger: Scalars['String'];
+  id: Scalars['BigInt'];
+  start: Scalars['DateTime'];
+  status: Scalars['ChallengeStatus'];
+};
+
+export type ChallengeDto = {
+  challenged: Scalars['String'];
+  challenger: Scalars['String'];
+  start: Scalars['DateTime'];
+  status: Scalars['ChallengeStatus'];
 };
 
 export type Competition = {
@@ -60,12 +77,16 @@ export type CreateCompetitionMatchDto = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  /** Challenge create */
+  createChallenge: Challenge;
   /** Competition create */
   createCompetition: Competition;
   /** CompetitionMatch create */
   createCompetitionMatch: CompetitionMatch;
   /** TimeFrame create */
   createTimeFrame: TimeFrame;
+  /** Challenge delete */
+  deleteChallenge: Challenge;
   /** Competition delete */
   deleteCompetition: Competition;
   /** CompetitionMatch delete */
@@ -74,6 +95,8 @@ export type Mutation = {
   deleteTimeFrame: TimeFrame;
   /** User delete */
   deleteUser: User;
+  /** Challenge update */
+  updateChallenge: Challenge;
   /** Competition update */
   updateCompetition: Competition;
   /** CompetitionMatch update */
@@ -82,6 +105,11 @@ export type Mutation = {
   updateTimeFrame: TimeFrame;
   /** User update */
   updateUser: User;
+};
+
+
+export type MutationCreateChallengeArgs = {
+  data: ChallengeDto;
 };
 
 
@@ -97,6 +125,11 @@ export type MutationCreateCompetitionMatchArgs = {
 
 export type MutationCreateTimeFrameArgs = {
   data: TimeFrameDto;
+};
+
+
+export type MutationDeleteChallengeArgs = {
+  id: Scalars['BigInt'];
 };
 
 
@@ -117,6 +150,12 @@ export type MutationDeleteTimeFrameArgs = {
 
 export type MutationDeleteUserArgs = {
   userId: Scalars['String'];
+};
+
+
+export type MutationUpdateChallengeArgs = {
+  data: ChallengeDto;
+  id: Scalars['BigInt'];
 };
 
 
@@ -230,6 +269,7 @@ export type User = {
   __typename?: 'User';
   availability?: Maybe<Array<TimeFrame>>;
   avatar: Scalars['String'];
+  challenges?: Maybe<Array<Challenge>>;
   competitionId?: Maybe<Scalars['BigInt']>;
   discordId?: Maybe<Scalars['String']>;
   games?: Maybe<Scalars['Float']>;
@@ -248,6 +288,28 @@ export type UserDto = {
   steamId: Scalars['String'];
   twitchId?: InputMaybe<Scalars['String']>;
 };
+
+export type CreateChallengeMutationVariables = Exact<{
+  data: ChallengeDto;
+}>;
+
+
+export type CreateChallengeMutation = { __typename?: 'Mutation', createChallenge: { __typename?: 'Challenge', id: any, challenger: string, challenged: string, start: any, status: any } };
+
+export type DeleteChallengeMutationVariables = Exact<{
+  id: Scalars['BigInt'];
+}>;
+
+
+export type DeleteChallengeMutation = { __typename?: 'Mutation', deleteChallenge: { __typename?: 'Challenge', id: any } };
+
+export type UpdateChallengeMutationVariables = Exact<{
+  id: Scalars['BigInt'];
+  data: ChallengeDto;
+}>;
+
+
+export type UpdateChallengeMutation = { __typename?: 'Mutation', updateChallenge: { __typename?: 'Challenge', id: any, challenger: string, challenged: string, start: any, status: any } };
 
 export type GetCompetitionByIdQueryVariables = Exact<{
   competitionId: Scalars['BigInt'];
@@ -274,7 +336,7 @@ export type GetRivalsQueryVariables = Exact<{
 }>;
 
 
-export type GetRivalsQuery = { __typename?: 'Query', getCompetitionById: { __typename?: 'Competition', id: any, players?: Array<{ __typename?: 'User', name: string, steamId: string, avatar: string }> | null } };
+export type GetRivalsQuery = { __typename?: 'Query', getCompetitionById: { __typename?: 'Competition', id: any, players?: Array<{ __typename?: 'User', name: string, steamId: string, avatar: string, games?: number | null, score?: number | null }> | null } };
 
 export type CreateTimeFrameMutationVariables = Exact<{
   data: TimeFrameDto;
@@ -303,7 +365,7 @@ export type GetUserByIdQueryVariables = Exact<{
 }>;
 
 
-export type GetUserByIdQuery = { __typename?: 'Query', getUserById: { __typename?: 'User', steamId: string, name: string, avatar: string, competitionId?: any | null, matches?: Array<{ __typename?: 'CompetitionMatch', id: any, competitionId: any, phase: number, name: string, rounds: number, start?: any | null, end?: any | null, player1: { __typename?: 'User', steamId: string, name: string, avatar: string }, player2: { __typename?: 'User', steamId: string, name: string, avatar: string }, results?: Array<{ __typename?: 'RoundResult', id: any, order: number, winner: string, details: string }> | null }> | null, availability?: Array<{ __typename?: 'TimeFrame', userId: string, id: any, days: string, description?: string | null, start: number, end: number, canPlay: boolean, validSince?: any | null, validUntil?: any | null }> | null } };
+export type GetUserByIdQuery = { __typename?: 'Query', getUserById: { __typename?: 'User', steamId: string, discordId?: string | null, twitchId?: string | null, name: string, avatar: string, score?: number | null, games?: number | null, competitionId?: any | null, challenges?: Array<{ __typename?: 'Challenge', id: any, challenger: string, challenged: string, start: any, status: any }> | null, matches?: Array<{ __typename?: 'CompetitionMatch', id: any, competitionId: any, phase: number, name: string, rounds: number, start?: any | null, end?: any | null, player1: { __typename?: 'User', steamId: string, name: string, avatar: string, score?: number | null, games?: number | null }, player2: { __typename?: 'User', steamId: string, name: string, avatar: string, score?: number | null, games?: number | null }, results?: Array<{ __typename?: 'RoundResult', id: any, order: number, winner: string, details: string }> | null }> | null, availability?: Array<{ __typename?: 'TimeFrame', userId: string, id: any, days: string, description?: string | null, start: number, end: number, canPlay: boolean, validSince?: any | null, validUntil?: any | null }> | null } };
 
 export type UpdateUserMutationVariables = Exact<{
   userData: UserDto;
@@ -313,6 +375,114 @@ export type UpdateUserMutationVariables = Exact<{
 export type UpdateUserMutation = { __typename?: 'Mutation', updateUser: { __typename?: 'User', steamId: string } };
 
 
+export const CreateChallengeDocument = gql`
+    mutation CreateChallenge($data: ChallengeDTO!) {
+  createChallenge(data: $data) {
+    id
+    challenger
+    challenged
+    start
+    status
+  }
+}
+    `;
+export type CreateChallengeMutationFn = Apollo.MutationFunction<CreateChallengeMutation, CreateChallengeMutationVariables>;
+
+/**
+ * __useCreateChallengeMutation__
+ *
+ * To run a mutation, you first call `useCreateChallengeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateChallengeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createChallengeMutation, { data, loading, error }] = useCreateChallengeMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useCreateChallengeMutation(baseOptions?: Apollo.MutationHookOptions<CreateChallengeMutation, CreateChallengeMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateChallengeMutation, CreateChallengeMutationVariables>(CreateChallengeDocument, options);
+      }
+export type CreateChallengeMutationHookResult = ReturnType<typeof useCreateChallengeMutation>;
+export type CreateChallengeMutationResult = Apollo.MutationResult<CreateChallengeMutation>;
+export type CreateChallengeMutationOptions = Apollo.BaseMutationOptions<CreateChallengeMutation, CreateChallengeMutationVariables>;
+export const DeleteChallengeDocument = gql`
+    mutation DeleteChallenge($id: BigInt!) {
+  deleteChallenge(id: $id) {
+    id
+  }
+}
+    `;
+export type DeleteChallengeMutationFn = Apollo.MutationFunction<DeleteChallengeMutation, DeleteChallengeMutationVariables>;
+
+/**
+ * __useDeleteChallengeMutation__
+ *
+ * To run a mutation, you first call `useDeleteChallengeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteChallengeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteChallengeMutation, { data, loading, error }] = useDeleteChallengeMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteChallengeMutation(baseOptions?: Apollo.MutationHookOptions<DeleteChallengeMutation, DeleteChallengeMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteChallengeMutation, DeleteChallengeMutationVariables>(DeleteChallengeDocument, options);
+      }
+export type DeleteChallengeMutationHookResult = ReturnType<typeof useDeleteChallengeMutation>;
+export type DeleteChallengeMutationResult = Apollo.MutationResult<DeleteChallengeMutation>;
+export type DeleteChallengeMutationOptions = Apollo.BaseMutationOptions<DeleteChallengeMutation, DeleteChallengeMutationVariables>;
+export const UpdateChallengeDocument = gql`
+    mutation UpdateChallenge($id: BigInt!, $data: ChallengeDTO!) {
+  updateChallenge(id: $id, data: $data) {
+    id
+    challenger
+    challenged
+    start
+    status
+  }
+}
+    `;
+export type UpdateChallengeMutationFn = Apollo.MutationFunction<UpdateChallengeMutation, UpdateChallengeMutationVariables>;
+
+/**
+ * __useUpdateChallengeMutation__
+ *
+ * To run a mutation, you first call `useUpdateChallengeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateChallengeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateChallengeMutation, { data, loading, error }] = useUpdateChallengeMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useUpdateChallengeMutation(baseOptions?: Apollo.MutationHookOptions<UpdateChallengeMutation, UpdateChallengeMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateChallengeMutation, UpdateChallengeMutationVariables>(UpdateChallengeDocument, options);
+      }
+export type UpdateChallengeMutationHookResult = ReturnType<typeof useUpdateChallengeMutation>;
+export type UpdateChallengeMutationResult = Apollo.MutationResult<UpdateChallengeMutation>;
+export type UpdateChallengeMutationOptions = Apollo.BaseMutationOptions<UpdateChallengeMutation, UpdateChallengeMutationVariables>;
 export const GetCompetitionByIdDocument = gql`
     query GetCompetitionById($competitionId: BigInt!) {
   getCompetitionById(competitionId: $competitionId) {
@@ -510,6 +680,8 @@ export const GetRivalsDocument = gql`
       name
       steamId
       avatar
+      games
+      score
     }
   }
 }
@@ -662,9 +834,20 @@ export const GetUserByIdDocument = gql`
     query GetUserById($userId: String!) {
   getUserById(userId: $userId) {
     steamId
+    discordId
+    twitchId
     name
     avatar
+    score
+    games
     competitionId
+    challenges {
+      id
+      challenger
+      challenged
+      start
+      status
+    }
     matches {
       id
       competitionId
@@ -675,11 +858,15 @@ export const GetUserByIdDocument = gql`
         steamId
         name
         avatar
+        score
+        games
       }
       player2 {
         steamId
         name
         avatar
+        score
+        games
       }
       start
       end

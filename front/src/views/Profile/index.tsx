@@ -1,15 +1,61 @@
 import { useQuery } from '@apollo/client'
 import { useParams } from 'react-router-dom'
-import Header from '../components/Header'
-import DiscordIcon from '../components/icons/DiscordIcon'
-import SteamIcon from '../components/icons/SteamIcon'
-import TwitchIcon from '../components/icons/TwitchIcon'
-import Loading from '../components/Loading'
-import { User } from '../generated/graphql'
-import { rivalsQuery, userQuery } from '../graphql'
-import { useUser } from '../logic/client'
-import CompetitionHeader from './Competitions/CompetitionHeader'
-import MatchComponent from './Competitions/MatchComponent'
+import Header from '../../components/Header'
+import DiscordIcon from '../../components/icons/DiscordIcon'
+import SteamIcon from '../../components/icons/SteamIcon'
+import TwitchIcon from '../../components/icons/TwitchIcon'
+import Loading from '../../components/Loading'
+import { Challenge, User } from '../../generated/graphql'
+import { rivalsQuery, userQuery } from '../../graphql'
+import { useUser } from '../../logic/client'
+import { useModals } from '../../modals/modals'
+import CompetitionHeader from '../Competitions/CompetitionHeader'
+import MatchComponent from '../Competitions/MatchComponent'
+
+
+const CHALLENGE_CLASS = 'p-2 rounded-md cursor-pointer hover:bg-gray-200'
+
+type ChallengesProps = {
+  hero?: User
+  players: Map<string, User>
+  challenges: Challenge[]
+}
+function Challenges({ hero, players, challenges }: ChallengesProps) {
+  if (!hero) return null
+
+  const modals = useModals()
+  const rival = (c: Challenge) => c.challenger === hero.steamId ? c.challenged : c.challenger
+  const onClick = (c: Challenge) => () => {
+    modals.setModal('challenge', {
+      id: c.id,
+      challenger: c.challenger === hero.steamId ? hero : players.get(c.challenger),
+      challenged: c.challenged === hero.steamId ? hero : players.get(c.challenged),
+      start: c.start,
+    })
+  }
+  
+  const items = challenges.map(c => 
+    <div key={c.id} className={CHALLENGE_CLASS} onClick={onClick(c)}>
+      <div className='flex flex-row gap-2'>
+        <img src={players.get(rival(c))?.avatar} className='h-10 w-10'/>
+        <div className='text-lg font-semibold my-auto'>
+          {players.get(rival(c))?.name}
+        </div>
+      </div>
+      
+      <div className='flex flex-row gap-1'>
+        <div>{new Date(c.start).toLocaleDateString()}</div>
+        <div>{new Date(c.start).toLocaleTimeString()}</div>
+      </div>
+    </div>)
+  return <div className='bg-gray-300 w-full h-fit p-5 rounded-2xl'>
+    <h1 className='text-gray-900 font-semibold text-lg mb-4'>CHALLENGES</h1>
+    <div className='flex flex-col w-full h-fit'>
+      {items}
+    </div>
+  </div>
+  
+}
 
 export default function Profile() {
   const ctx = useUser()
@@ -19,6 +65,7 @@ export default function Profile() {
     variables: { userId: id ?? ctx?.user?.id },
     skip: !(id ?? ctx?.user?.id),
   })
+  const sameUser = !id || id === ctx?.user?.id
 
   const user = userResult.data?.getUserById as User|undefined
 
@@ -31,7 +78,11 @@ export default function Profile() {
 
   const rankedList = [...players].sort( (a,b) => (b.score ?? 0) - (a.score ?? 0) )
   const ranking = new Map()
-  rankedList.forEach( (u,i) => ranking.set(u.steamId, i))
+  const playerMap = new Map()
+  rankedList.forEach( (u,i) => {
+    ranking.set(u.steamId, i)
+    playerMap.set(u.steamId, u)
+  })
 
   if (!ctx?.user || userResult.loading || rivalsResult.loading) return <Loading />
 
@@ -90,7 +141,6 @@ export default function Profile() {
                 <span>{ranking.size}</span>
               </div>
             </div>
-
           </div>
           
           <div>
@@ -98,7 +148,7 @@ export default function Profile() {
           </div>
         </div>
 
-        <div className='flex-none flex flex-col gap-5 w-64'>
+        <div className='flex-none flex flex-col gap-5 w-60'>
           <div className='flex flex-col bg-gray-300 w-full h-fit rounded-2xl p-5'>
             <h1 className='text-gray-900 font-semibold text-lg mb-4'>LINKS</h1>
             <a 
@@ -124,9 +174,11 @@ export default function Profile() {
             </a>}
           </div>
 
-          <div className='bg-gray-300 w-full h-32 rounded-2xl'>
-            <h1 className='text-gray-900 font-semibold text-lg p-5 mb-4'>CHALLENGES</h1>
-          </div>
+          {sameUser && <Challenges
+            challenges={user!.challenges!}
+            hero={user}
+            players={playerMap}
+          />}
         </div>
       </div>
     </div>

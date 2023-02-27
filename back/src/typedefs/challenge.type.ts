@@ -1,6 +1,17 @@
 import { ChallengeStatus } from '@prisma/client'
+import { GraphQLScalarType } from 'graphql'
 import { BigIntResolver } from 'graphql-scalars'
 import { Field, ObjectType } from 'type-graphql'
+
+export const ChallengeStatusScalar = new GraphQLScalarType({
+  name: 'ChallengeStatus',
+  serialize(value: ChallengeStatus) {
+    return value.toString()
+  },
+  parseValue(value: string) {
+    return ChallengeStatus[value]
+  },
+})
 
 @ObjectType()
 export class Challenge {
@@ -16,6 +27,6 @@ export class Challenge {
   @Field()
   start: Date
 
-  @Field()
+  @Field(() => ChallengeStatusScalar)
   status: ChallengeStatus
 }

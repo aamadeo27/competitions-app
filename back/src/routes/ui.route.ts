@@ -13,7 +13,7 @@ const homeController = (req: Request, res: Response) => {
   res.redirect(`/profile/${user.id}`)
 }
 
-const restricted = ['/calendar', '/match', '/divisions/*']
+const restricted = ['/calendar', '/match', '/divisions/*', '/profile/*']
 const open = ['/login']
 
 class UIRoute implements Routes {
