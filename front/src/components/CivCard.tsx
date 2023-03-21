@@ -1,14 +1,14 @@
-import { Civ } from '../logic/data'
+import type { Civ } from '../logic/data'
 import React from 'react'
 import classNames from 'classnames'
 import * as Icons from '@heroicons/react/24/outline'
 
 type CivCardProps = {
-    civ: Civ
-    clearCiv?: () => void
+  civ: Civ
+  clearCiv?: () => void
 }
 
-export default function CivCard({ civ, clearCiv }: CivCardProps){
+export default function CivCard({ civ, clearCiv }: CivCardProps) {
   const dragStart = (e: React.DragEvent<HTMLDivElement>) => {
     e.dataTransfer?.setData('type', 'civ')
     e.dataTransfer?.setData('name', civ!)
@@ -22,14 +22,13 @@ export default function CivCard({ civ, clearCiv }: CivCardProps){
   )
 
   return (
-    <div draggable
-      onDragStart={dragStart}
-      className={clazz}>
-      {clearCiv && <span onClick={clearCiv}
-        className={xClazz}>
-        <Icons.XMarkIcon className='stroke-red' />
-      </span>}
+    <div draggable onDragStart={dragStart} className={clazz}>
+      {clearCiv && (
+        <span onClick={clearCiv} className={xClazz}>
+          <Icons.XMarkIcon className="stroke-red" />
+        </span>
+      )}
       <span>{civ}</span>
     </div>
-  ) 
+  )
 }

@@ -1,5 +1,5 @@
 mutation DeleteTimeFrame($id: BigInt!) {
   deleteTimeFrame(id: $id) {
-    id  
+    id
   }
 }

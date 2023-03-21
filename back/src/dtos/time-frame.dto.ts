@@ -1,5 +1,4 @@
 import { TimeFrame } from '@/typedefs/time-frame.type'
-import { BigIntResolver } from 'graphql-scalars'
 import { InputType, Field } from 'type-graphql'
 
 @InputType()

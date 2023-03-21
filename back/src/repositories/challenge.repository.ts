@@ -3,7 +3,6 @@ import { HttpException } from '@exceptions/HttpException'
 import { Challenge } from '@interfaces/challenge.interface'
 import { isEmpty } from '@utils/util'
 import { PrismaClient } from '@prisma/client'
-import { pick } from 'lodash'
 
 const prisma = new PrismaClient()
 

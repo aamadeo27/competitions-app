@@ -5,11 +5,13 @@ import { Competition } from '@typedefs/competitions.type'
 import UserRepository from '@/repositories/users.repository'
 import CompetitionMatchRepository from '@/repositories/competition-matches.repository'
 import { BigIntResolver } from 'graphql-scalars'
+import AdmissionRepository from '@/repositories/admission.repository'
 
 @Resolver(() => Competition)
 export class CompetitionResolver extends CompetitionRepository {
   private userRepository = new UserRepository()
   private matchRepository = new CompetitionMatchRepository()
+  private admissionsRepository = new AdmissionRepository()
 
   @Query(() => [Competition], {
     description: 'Competition find list',
@@ -71,5 +73,12 @@ export class CompetitionResolver extends CompetitionRepository {
   @FieldResolver()
   async players(@Root() c: Competition) {
     return await this.userRepository.userInCompetition(c.id)
+  }
+
+  @FieldResolver()
+  async admissions(@Root() c: Competition) {
+    const byPlayer = (await this.admissionsRepository.admissionsToCompetition(c.id)) ?? []
+
+    return byPlayer
   }
 }

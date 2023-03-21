@@ -2,7 +2,6 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 import Matches from './Matches'
 
-
 const matches = [
   {
     id: '',
@@ -22,9 +21,12 @@ const matches = [
       name: 'Player 2',
       avatar: '',
     },
-    results: [{ winner: 'player-1', id: '', details: '{}', matchId: '', order: 0 }],
+    results: [
+      { winner: 'player-1', id: '', details: '{}', matchId: '', order: 0 },
+    ],
     start: new Date(),
-  },{
+  },
+  {
     id: '',
     name: '',
     phase: 1,
@@ -43,7 +45,7 @@ const matches = [
       avatar: '',
     },
     start: new Date(),
-  }
+  },
 ]
 
 test('renders matches', () => {

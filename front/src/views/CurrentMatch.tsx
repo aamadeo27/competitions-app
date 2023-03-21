@@ -1,6 +1,7 @@
 import classNames from 'classnames'
 import CivCard from '../components/CivCard'
-import { Civ, CIVS, Player, SETTS } from '../logic/data'
+import type { Civ, Player } from '../logic/data'
+import { CIVS, SETTS } from '../logic/data'
 import Match from './Match'
 import { useReducer } from 'react'
 import SettingCard from '../components/SettingCard'
@@ -30,28 +31,31 @@ type Action = {
 
 const handlers = {
   pickCiv(state: State, action: Payload) {
-    const {player, civ} = action as CivPick
+    const { player, civ } = action as CivPick
 
-    return {...state, [player]: civ}
+    return { ...state, [player]: civ }
   },
-  pickSetting(state: State, setting: Payload){
-    return {...state, setting: setting as number}
-  }
+  pickSetting(state: State, setting: Payload) {
+    return { ...state, setting: setting as number }
+  },
 }
 
-const reducer = (state: State, action: Action) =>       
+const reducer = (state: State, action: Action) =>
   handlers[action.type](state, action.payload)
 
 const EMPTY_STATE: State = {
-  a: null, b: null, setting: null 
+  a: null,
+  b: null,
+  setting: null,
 }
 
 export default function Draft() {
   const [state, dispatch] = useReducer(reducer, EMPTY_STATE)
 
   const pickers = {
-    civ: (player: Player, civ: Civ) => dispatch({ type: 'pickCiv', payload: { player, civ } }),
-    setting: (settId: number|null) =>
+    civ: (player: Player, civ: Civ) =>
+      dispatch({ type: 'pickCiv', payload: { player, civ } }),
+    setting: (settId: number | null) =>
       dispatch({ type: 'pickSetting', payload: settId }),
   }
 
@@ -61,26 +65,19 @@ export default function Draft() {
     'border-1'
   )
 
-  const civs = CIVS
-    .filter( c => c !== state.a && c !== state.b)
-    .map( (c,i) => 
-      <CivCard civ={c}
-        key={i}/>
-    )
+  const civs = CIVS.filter((c) => c !== state.a && c !== state.b).map(
+    (c, i) => <CivCard civ={c} key={i} />
+  )
 
-  const settings = SETTS
-    .filter( (s, settId) => settId !== state.setting )
-    .map( (s,i) => 
-      <SettingCard setting={s}
-        key={i}
-        id={i} />
-    )
+  const settings = SETTS.filter((s, settId) => settId !== state.setting).map(
+    (s, i) => <SettingCard setting={s} key={i} id={i} />
+  )
 
-  return(
+  return (
     <div className={clazz}>
       <div className={styles.civs}>
         <Curtain />
-        {civs}      
+        {civs}
       </div>
       <div className={styles.settings}>
         <Curtain />
@@ -88,7 +85,7 @@ export default function Draft() {
       </div>
       <div className={styles.match}>
         <Curtain />
-        <Match pickers={pickers}/>
+        <Match pickers={pickers} />
       </div>
     </div>
   )

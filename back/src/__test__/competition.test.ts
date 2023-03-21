@@ -84,7 +84,6 @@ const GET_COMPETITION = `
     }
   }
 `
-
 let server
 beforeEach(async () => {
   server = await app.listen()
@@ -124,7 +123,7 @@ describe('Graphql Competitions Queries', () => {
 
     const competition: Competition = JSON.parse(response.text).data.getCompetitionById
 
-    expect(competition.matches.length).toBe(66)
-    expect(competition.players.length).toBe(12)
+    expect(competition.matches.length).toBe(78)
+    expect(competition.players.length).toBe(13)
   })
 })
