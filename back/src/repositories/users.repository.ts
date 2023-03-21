@@ -46,6 +46,7 @@ export default class UserRepository {
     if (isEmpty(userData)) throw new HttpException(400, 'userData is empty')
 
     const findUser: User = await prisma.user.findUnique({ where: { steamId: userData.steamId } })
+    if (!findUser) throw new HttpException(409, "User doesn't exist")
 
     return await prisma.user.update({
       where: { steamId: userData.steamId },

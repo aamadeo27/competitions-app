@@ -24,7 +24,7 @@ export default function Button({
   sizeClasses = SIZE_CLASSES,
   extraClasses,
   label,
-}: Props){
+}: Props) {
   const classes = classNames(
     mainClasses,
     disabled ? 'bg-gray-500 text-white' : colorClasses,
@@ -33,9 +33,13 @@ export default function Button({
     extraClasses
   )
 
-  return <a className={classes}
-    onClick={ !disabled ? onClick : undefined}
-    href={href}>
-    {label}
-  </a>
+  return (
+    <a
+      className={classes}
+      onClick={!disabled ? onClick : undefined}
+      href={href}
+    >
+      {label}
+    </a>
+  )
 }

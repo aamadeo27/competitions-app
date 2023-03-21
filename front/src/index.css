@@ -39,7 +39,7 @@ code {
 }
 
 .tooltip-target {
-  position: relative
+  position: relative;
 }
 
 .tooltip-target:hover .tooltip {

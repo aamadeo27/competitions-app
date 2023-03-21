@@ -17,6 +17,8 @@ import { User } from '@typedefs/users.type'
 import RoundResultRepository from '@/repositories/result.repository'
 import TimeFrameRepository from '@/repositories/time-frame.repository'
 import CompetitionMatchRepository from '@/repositories/competition-matches.repository'
+import ChallengeRepository from '@/repositories/challenge.repository'
+import AdmissionRepository from '@/repositories/admission.repository'
 
 @ArgsType()
 class GetUsersInCompetitionArgs {
@@ -30,6 +32,8 @@ export class UserResolver {
   private resultRepository = new RoundResultRepository()
   private timeFrameRepository = new TimeFrameRepository()
   private matchesRepository = new CompetitionMatchRepository()
+  private challengesRepository = new ChallengeRepository()
+  private admissionsRepository = new AdmissionRepository()
 
   @Query(() => [User], {
     description: 'User find list',
@@ -93,5 +97,20 @@ export class UserResolver {
   @FieldResolver()
   async matches(@Root() u: User) {
     return (await this.matchesRepository.matchFindByUserId(u.steamId)) ?? []
+  }
+
+  @FieldResolver()
+  async challenges(@Root() u: User) {
+    const byPlayer = (await this.challengesRepository.challengesByPlayer(u.steamId)) ?? []
+    const toPlayer = (await this.challengesRepository.challengesToPlayer(u.steamId)) ?? []
+
+    return [...byPlayer, ...toPlayer]
+  }
+
+  @FieldResolver()
+  async admissions(@Root() u: User) {
+    const byPlayer = (await this.admissionsRepository.admissionsByPlayer(u.steamId)) ?? []
+
+    return byPlayer
   }
 }

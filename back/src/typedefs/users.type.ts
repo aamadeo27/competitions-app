@@ -1,5 +1,7 @@
 import { BigIntResolver } from 'graphql-scalars'
 import { Field, ID, ObjectType } from 'type-graphql'
+import { Admission } from './admission.type'
+import { Challenge } from './challenge.type'
 import { CompetitionMatch } from './competition-matches.type'
 import { TimeFrame } from './time-frame.type'
 
@@ -34,4 +36,10 @@ export class User {
 
   @Field(() => [CompetitionMatch], { nullable: true })
   matches?: CompetitionMatch[]
+
+  @Field(() => [Challenge], { nullable: true })
+  challenges?: Challenge[]
+
+  @Field(() => [Admission], { nullable: true })
+  admissions?: Admission[]
 }

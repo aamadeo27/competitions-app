@@ -11,13 +11,12 @@ import express, { Request } from 'express'
 import helmet from 'helmet'
 import hpp from 'hpp'
 import { buildSchema } from 'type-graphql'
-import { NODE_ENV, PORT, ORIGIN, CREDENTIALS } from '@config'
+import { NODE_ENV, PORT, CREDENTIALS } from '@config'
 import { authMiddleware, authChecker } from '@middlewares/auth.middleware'
 import errorMiddleware from '@middlewares/error.middleware'
 import { logger, responseLogger, errorLogger } from '@utils/logger'
 import passport from 'passport'
 import { Routes } from '@interfaces/routes.interface'
-import { HttpException } from './exceptions/HttpException'
 
 class App {
   public app: express.Application
