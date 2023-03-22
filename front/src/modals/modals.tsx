@@ -8,10 +8,11 @@ const modals = {
   challenge: (close: () => void, data?: any) => (
     <Challenge
       start={data.start}
-      end={data.end} 
+      end={data.end}
       close={close}
       challenger={data.challenger}
       challenged={data.challenged}
+      id={data.id}
     />
   ),
 }

@@ -95,8 +95,6 @@ function ShortMatchComponent({ data, ranking }: MatchProps) {
     wins(data.results!, data.player2.steamId),
   ]
 
-  const result = points[0] > points[1] ? 'lost' : (points[0] < points[1] ? 'won' : 'tied')
-
   return (
     <div className={containerClasses}>
       <div className={boxClasses('left')}></div>

@@ -20,7 +20,7 @@ type Props = {
   end: number
   challenger: User
   challenged: User
-  id: bigint
+  id?: bigint
 }
 
 const HOURS: Option[] = []

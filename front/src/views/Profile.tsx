@@ -5,7 +5,7 @@ import DiscordIcon from '../components/icons/DiscordIcon'
 import SteamIcon from '../components/icons/SteamIcon'
 import TwitchIcon from '../components/icons/TwitchIcon'
 import Loading from '../components/Loading'
-import { Challenge, User } from '../generated/graphql'
+import type { Challenge, User } from '../generated/graphql'
 import { rivalsQuery, userQuery } from '../graphql'
 import { useUser } from '../logic/client'
 import { useModals } from '../modals/modals'
@@ -20,11 +20,13 @@ type ChallengesProps = {
   challenges: Challenge[]
 }
 function Challenges({ hero, players, challenges }: ChallengesProps) {
+  const modals = useModals()
+
   if (!hero) return null
 
-  const modals = useModals()
   const rival = (c: Challenge) =>
     c.challenger === hero.steamId ? c.challenged : c.challenger
+
   const onClick = (c: Challenge) => () => {
     modals.setModal('challenge', {
       id: c.id,
@@ -80,15 +82,16 @@ export default function Profile() {
   const rankedList = [...players].sort(
     (a, b) => (b.score ?? 0) - (a.score ?? 0)
   )
-  const ranking = new Map()
+  const ranking = new Map<string, number>()
   const playerMap = new Map()
   rankedList.forEach((u, i) => {
     ranking.set(u.steamId, i)
     playerMap.set(u.steamId, u)
   })
 
-  if (!ctx?.user || userResult.loading || rivalsResult.loading)
+  if (!ctx?.user || userResult.loading || rivalsResult.loading) {
     return <Loading />
+  }
 
   const matches = user?.matches
     ?.filter((m) => m.start)
@@ -123,7 +126,7 @@ export default function Profile() {
             <div className="flex flex-row">
               <CompetitionHeader name="Expert Division" shortname="XP" />
               <div className="flex-none h-28 mx-3 py-10 text-gray-900 text-[50px]">
-                #{ranking.get(user?.steamId) + 1}
+                #{ranking.get(user!.steamId)! + 1}
               </div>
             </div>
 
@@ -143,7 +146,6 @@ export default function Profile() {
                 <span>{ranking.size}</span>
               </div>
             </div>
-
           </div>
 
           <div>{matches}</div>

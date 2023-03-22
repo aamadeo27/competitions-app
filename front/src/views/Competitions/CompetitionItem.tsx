@@ -1,5 +1,4 @@
 import { CalendarIcon } from '@heroicons/react/24/outline'
-import classNames from 'classnames'
 import { Link } from 'react-router-dom'
 import type {
   Competition,
