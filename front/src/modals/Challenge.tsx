@@ -17,7 +17,6 @@ import type { User } from '../generated/graphql'
 type Props = {
   close: () => void
   start: number
-  end: number
   challenger: User
   challenged: User
   id?: bigint
@@ -80,7 +79,7 @@ export default function Challenge({
 
   const MAIN_CLASSES = classNames(
     'relative mx-auto mt-16 p-12 rounded-3xl',
-    'bg-gray-900 h-fit w-fit min-w-modal',
+    'bg-gray-900 w-fit h-fit',
     'flex flex-col gap-10 text-gray-300'
   )
 
@@ -164,14 +163,6 @@ export default function Challenge({
           )}
         </>
       </div>
-
-      <Button
-        onClick={() => close()}
-        label={<Icons.XMarkIcon />}
-        colorClasses=""
-        sizeClasses="h-8 w-8"
-        extraClasses="absolute top-5 right-5"
-      />
     </div>
   )
 }
