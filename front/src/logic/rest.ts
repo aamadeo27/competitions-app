@@ -1,7 +1,7 @@
 export class ApiError extends Error {
   public type: string
 
-  constructor(message: string, original?: any, type?: string ) {
+  constructor(message: string, original?: any, type?: string) {
     super(message)
     this.cause = original
     this.type = type ?? original.constructor.name
@@ -15,7 +15,7 @@ export class RestClient {
     try {
       console.debug('Getting')
 
-      const response = await fetch(url,{ 
+      const response = await fetch(url, {
         credentials: 'include',
         ...options,
       })
@@ -24,9 +24,9 @@ export class RestClient {
 
       if (response.status === 401) {
         throw new ApiError('Invalid JSON Web Token', undefined, 'Unauthorized')
-      } else if (response.status >= 400 && response.status < 500 ) {
+      } else if (response.status >= 400 && response.status < 500) {
         throw new ApiError('Bad Request', undefined, response.statusText)
-      } else if (response.status >= 500 ) {
+      } else if (response.status >= 500) {
         throw new ApiError('Server error', undefined, response.statusText)
       }
 
@@ -36,8 +36,7 @@ export class RestClient {
       throw new ApiError(`Network error GET::${url}`, error)
     }
 
-
-    try { 
+    try {
       const data = JSON.parse(text)
 
       return data
@@ -48,4 +47,3 @@ export class RestClient {
     }
   }
 }
-

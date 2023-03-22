@@ -2,34 +2,26 @@ import { useQuery } from '@apollo/client'
 import Container from '../../components/Container'
 import Header from '../../components/Header'
 import Loading from '../../components/Loading'
-import { Competition } from '../../generated/graphql'
+import type { Competition } from '../../generated/graphql'
 import CompetitionItem from './CompetitionItem'
 import { competitionsQuery } from '../../graphql'
 
-
 export default function Competitions() {
-
   const { data, loading } = useQuery(competitionsQuery)
 
-  const competitions = data?.getCompetitions?.map((competition: Competition) => 
-    <CompetitionItem
-      data={competition}
-      key={competition.name}
-    />
-  ) ?? []
+  const competitions =
+    data?.getCompetitions?.map((competition: Competition) => (
+      <CompetitionItem data={competition} key={competition.name} />
+    )) ?? []
 
-  if ( loading ) {
+  if (loading) {
     return <Loading />
   }
-  
-  return ( 
-    <div className='mt-28'>
-      <Header>
-        Divisions
-      </Header>
-      <Container>
-        {competitions}
-      </Container>
+
+  return (
+    <div className="mt-28">
+      <Header>Divisions</Header>
+      <Container>{competitions}</Container>
     </div>
   )
 }

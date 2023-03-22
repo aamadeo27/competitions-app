@@ -30,7 +30,6 @@ export class ChallengeResolver {
       const challenge: Challenge = await this.challengeRepository.challengeUpdate(id, challengeData)
       return challenge
     } catch (error) {
-      console.log(error)
       throw new GraphQLError(error.message, null, null, null, null, error, {
         code: GRAPHQL_CODES[error.status.toString()],
       })

@@ -7,9 +7,11 @@ export default function Loading({ className }: { className?: string }) {
     className
   )
 
-  return <div className={classes}>
-    <span className='text-3xl font-bold'>Loading...</span>
-    <span className='text-sm'>wololoooo ♫</span>
-    <img src='/img/loading.gif' />
-  </div>
+  return (
+    <div className={classes}>
+      <span className="text-3xl font-bold">Loading...</span>
+      <span className="text-sm">wololoooo ♫</span>
+      <img src="/img/loading.gif" alt="" />
+    </div>
+  )
 }

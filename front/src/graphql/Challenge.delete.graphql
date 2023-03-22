@@ -3,3 +3,4 @@ mutation DeleteChallenge($id: BigInt!) {
     id  
   }
 }
+

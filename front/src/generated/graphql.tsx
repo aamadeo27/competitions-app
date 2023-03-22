@@ -13,9 +13,18 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  AdmissionStatus: any;
   BigInt: any;
   ChallengeStatus: any;
   DateTime: any;
+};
+
+export type Admission = {
+  __typename?: 'Admission';
+  competition_id: Scalars['BigInt'];
+  status: Scalars['AdmissionStatus'];
+  steamId: Scalars['String'];
+  timestamp: Scalars['DateTime'];
 };
 
 export type Challenge = {
@@ -36,6 +45,7 @@ export type ChallengeDto = {
 
 export type Competition = {
   __typename?: 'Competition';
+  admissions?: Maybe<Array<Admission>>;
   id: Scalars['BigInt'];
   matches?: Maybe<Array<CompetitionMatch>>;
   name: Scalars['String'];
@@ -267,6 +277,7 @@ export type TimeFrameDto = {
 
 export type User = {
   __typename?: 'User';
+  admissions?: Maybe<Array<Admission>>;
   availability?: Maybe<Array<TimeFrame>>;
   avatar: Scalars['String'];
   challenges?: Maybe<Array<Challenge>>;

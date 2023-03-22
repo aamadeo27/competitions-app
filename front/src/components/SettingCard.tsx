@@ -1,15 +1,19 @@
-import { Setting } from '../logic/data'
+import type { Setting } from '../logic/data'
 import * as Icons from '@heroicons/react/24/outline'
 import React from 'react'
 import classNames from 'classnames'
 
 type SettCardProps = {
-    setting: Setting
-    id: number
-    clearSetting?: () => void
+  setting: Setting
+  id: number
+  clearSetting?: () => void
 }
 
-export default function SettingCard({ setting, id, clearSetting }: SettCardProps){
+export default function SettingCard({
+  setting,
+  id,
+  clearSetting,
+}: SettCardProps) {
   const dragStart = (e: React.DragEvent<HTMLDivElement>) => {
     e.dataTransfer?.setData('type', 'setting')
     e.dataTransfer?.setData('id', `${id}`)
@@ -23,17 +27,15 @@ export default function SettingCard({ setting, id, clearSetting }: SettCardProps
   )
 
   return (
-    <div draggable
-      onDragStart={dragStart}
-      className={clazz}>
+    <div draggable onDragStart={dragStart} className={clazz}>
       <span>
         {setting!.map} in
         <span className="font-bold text-blue-100"> {setting!.age} </span>
-        {clearSetting && <span onClick={clearSetting}
-          className={xClazz}>
-          <Icons.XMarkIcon className='stroke-red' />
-        </span>}
-        
+        {clearSetting && (
+          <span onClick={clearSetting} className={xClazz}>
+            <Icons.XMarkIcon className="stroke-red" />
+          </span>
+        )}
       </span>
     </div>
   )

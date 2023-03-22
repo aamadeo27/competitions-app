@@ -7,3 +7,4 @@ mutation CreateChallenge($data: ChallengeDTO!) {
     status
   }
 }
+
