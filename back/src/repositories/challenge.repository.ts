@@ -50,7 +50,7 @@ export default class ChallengeRepository {
 
     return await prisma.challenge.update({
       where: { id: challengeData.id },
-      data: pick,
+      data: challengeData,
     })
   }
 

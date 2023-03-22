@@ -41,7 +41,12 @@ function AvailabilityEvent({ data }: EventProps) {
   const onClick = () => {
     if (!rival) return
 
-    modals.setModal('challenge', { start, end, challenger: hero, challenged: rival })
+    modals.setModal('challenge', {
+      start,
+      end,
+      challenger: hero,
+      challenged: rival,
+    })
   }
 
   return (
