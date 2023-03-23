@@ -1,5 +1,5 @@
 import { config } from 'dotenv'
-config({ path: `.env.${process.env.NODE_ENV || 'development'}.local` })
+config({ path: '.env' })
 
 const { STEAM_API_KEY, API_JWT_SECRET } = process.env
 export const CREDENTIALS = process.env.CREDENTIALS === 'true'
