@@ -21,12 +21,6 @@ jobs:
           cd back
           whoami
           docker compose up -d crdb
-          
-      - name: Wait for DB
-        uses: aamadeo27/wait-for-it-action@master
-        with:
-          host: localhost
-          port: 26257
 
       - name: Set up DB
         run: bash actions-scripts/setup-db
