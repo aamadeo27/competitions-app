@@ -23,7 +23,10 @@ jobs:
           docker compose up -d crdb
           
       - name: Wait for DB
-        run: bash actions-scripts/wait-for-it.sh -h localhost -p 26257
+        uses: MaximeGoyette/wait-for-it-action@master
+        with:
+          host: localhost
+          port: 26257
 
       - name: Set up DB
         run: bash actions-scripts/setup-db
