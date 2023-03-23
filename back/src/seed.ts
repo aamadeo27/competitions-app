@@ -18,7 +18,7 @@ Creates results
 const players = [
   {
     steamId: '76561199087990682',
-    name: '[WOA] efffdis - afk',
+    name: '[WOA] efffdis',
     avatar:
       'https://avatars.akamai.steamstatic.com/077b8cb8077f09dd8d7e346a1d617bfc26859bb5_full.jpg',
     competitionId: { $oid: '633096daa34af58cc342e28f' },
