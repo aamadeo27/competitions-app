@@ -21,7 +21,6 @@ jobs:
           cd back
           whoami
           docker compose up -d crdb
-          bash action-scripts/wait-for-it -h localhost -p 26257
 
       - name: Set up DB
         run: bash actions-scripts/setup-db

@@ -28,12 +28,23 @@ class UserService {
     if (isEmpty(userData)) throw new HttpException(400, 'userData is empty')
     const { steamId } = userData
 
+    console.log('FindUser', steamId)
     const findUser: User = await this.users.findUnique({ where: { steamId } })
     if (findUser) return findUser
 
-    const { name, avatar } = await this.steamApi.getSteamInfo(userData.steamId)
-    const createUserData: User = await this.users.create({ data: { ...userData, name, avatar } })
-    return createUserData
+    if (!userData.avatar || !userData.name) {
+      const { name, avatar } = await this.steamApi.getSteamInfo(userData.steamId)
+      userData.name = name
+      userData.avatar = avatar
+    }
+    
+    try {
+      const createUserData: User = await this.users.create({ data: userData })
+      return createUserData
+    } catch(error) {
+      console.error(error)
+    }
+    
   }
 
   public async deleteUser(steamId: string): Promise<User> {
