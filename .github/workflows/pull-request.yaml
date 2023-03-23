@@ -23,7 +23,7 @@ jobs:
           docker compose up -d crdb
           
       - name: Wait for DB
-        uses: MaximeGoyette/wait-for-it-action@master
+        uses: aamadeo27/wait-for-it-action@master
         with:
           host: localhost
           port: 26257
