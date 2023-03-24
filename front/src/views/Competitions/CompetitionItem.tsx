@@ -1,4 +1,4 @@
-import { CalendarIcon } from '@heroicons/react/24/outline'
+import { CalendarIcon, PencilSquareIcon } from '@heroicons/react/24/outline'
 import { Link } from 'react-router-dom'
 import type {
   Competition,
@@ -10,6 +10,7 @@ import CompetitionHeader from './CompetitionHeader'
 
 type Props = {
   data: Competition
+  user?: User
 }
 
 const WEEK_IN_MS = 604800000
@@ -23,6 +24,10 @@ const week = (data: Competition) => {
   const start = new Date(data.start).getTime()
 
   return Math.ceil((Date.now() - start) / WEEK_IN_MS)
+}
+
+const canRequestAdmission = (_: bigint, user?: User) => {
+  return (user?.admissions?.length ?? 0) === 0
 }
 
 const getLeader = (data: Competition) => {
@@ -101,7 +106,7 @@ function NextMatch({ data }: { data?: CompetitionMatch }) {
 
 const ordinal = [null, '1st', '2nd', '3rd']
 
-export default function CompetitionItem({ data }: Props) {
+export default function CompetitionItem({ data, user }: Props) {
   const weekNum = week(data)
 
   return (
@@ -132,13 +137,19 @@ export default function CompetitionItem({ data }: Props) {
           <span className="inline-block text-top h-full py-1"> MATCHES </span>
         </div>
         <div className="flex flex-row p-2 gap-2">
+          {(!weekNum || weekNum < 0) && canRequestAdmission(data.id, user) && (
+            <PencilSquareIcon
+              className="h-6 w-6 stroke-gray-700 cursor-pointer"
+              onClick={() => console.log('Modal')}
+            />
+          )}
           {weekNum === undefined ? (
             <span className="inline-block text-top h-full py-1">
               {' '}
               Not Scheduled{' '}
             </span>
           ) : weekNum < 0 ? (
-            <span className="inline-block text-gray-900 text-xl pl-5">
+            <span className="inline-block text-gray-900 pl-5">
               Starts {data.start.split('T')[0]}
             </span>
           ) : (
