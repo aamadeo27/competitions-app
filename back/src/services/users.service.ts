@@ -28,7 +28,6 @@ class UserService {
     if (isEmpty(userData)) throw new HttpException(400, 'userData is empty')
     const { steamId } = userData
 
-    console.log('FindUser', steamId)
     const findUser: User = await this.users.findUnique({ where: { steamId } })
     if (findUser) return findUser
 

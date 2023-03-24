@@ -109,11 +109,14 @@ const players = [
   },
 ]
 
+const start = new Date()
+start.setDate(start.getDate() + 15)
+
 const competitions = [
-  { name: 'Expert Division', shortname: 'XP' },
-  { name: 'GP Division', shortname: 'GP' },
-  { name: 'Intermediate Division', shortname: 'IM' },
-  { name: 'Beginner Division', shortname: 'BN' },
+  { name: 'Expert Division', shortname: 'XP', start },
+  { name: 'GP Division', shortname: 'GP', start },
+  { name: 'Intermediate Division', shortname: 'IM', start },
+  { name: 'Beginner Division', shortname: 'BN', start },
 ]
 
 const createCompetitions = async () => {
