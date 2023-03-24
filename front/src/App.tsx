@@ -4,13 +4,14 @@ import Calendar from './views/Calendar'
 import CurrentMatch from './views/CurrentMatch'
 import './App.css'
 import Login from './views/Login'
-import Profile from './views/Profile'
 import { ApiWrapper } from './logic/client'
 import ProfileDropdown from './components/ProfileDropdown'
 import Competitions from './views/Competitions'
 import CompetitionPage from './views/Competitions/CompetitionPage'
 import { ModalWrapper } from './modals/modals'
 import { ApolloSandbox } from '@apollo/sandbox/react'
+import ConfigurationsPage from './views/Configurations'
+import Profile from './views/Profile'
 
 function getContentRoute(page: React.ReactNode, path: string) {
   const element = (
@@ -58,7 +59,7 @@ export default function Dashboard() {
                 {getContentRoute(<Competitions />, '/divisions')}
                 {getContentRoute(<CompetitionPage />, '/divisions/:id')}
               </Route>
-              {getContentRoute(<CurrentMatch />, '/configurations')}
+              {getContentRoute(<ConfigurationsPage />, '/configurations')}
               <Route
                 path="/sandbox"
                 element={
