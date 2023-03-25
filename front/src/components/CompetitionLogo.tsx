@@ -8,22 +8,27 @@ const COLOR_MAP: Record<string, string> = {
 }
 
 const SIZES = {
+  big: {
+    circle: 'h-56 w-56',
+    text: 'text-[140px]',
+  },
   medium: {
     circle: 'h-16 w-16',
-    text: 'px-3.5 py-3 text-3xl',
+    text: 'text-3xl',
   },
   small: {
     circle: 'h-10 w-10',
-    text: 'px-2.5 py-1 text-lg',
+    text: 'text-lg',
   },
 }
 
 type Props = {
   shortname: string
-  size?: 'medium' | 'small'
+  size?: keyof typeof SIZES
 }
 export default function CompetitionLogo({ shortname, size = 'medium' }: Props) {
   const circleClasses = classNames(
+    'flex',
     SIZES[size].circle,
     'm-2 rounded-full',
     COLOR_MAP[shortname]
@@ -31,9 +36,11 @@ export default function CompetitionLogo({ shortname, size = 'medium' }: Props) {
 
   return (
     <div className={circleClasses}>
-      <span className={classNames('block text-gray-200', SIZES[size].text)}>
+      <div
+        className={classNames('block text-gray-200 mx-auto', SIZES[size].text)}
+      >
         {shortname}
-      </span>
+      </div>
     </div>
   )
 }
