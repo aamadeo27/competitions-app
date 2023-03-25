@@ -4,16 +4,34 @@ import React from 'react'
 import classNames from 'classnames'
 import type { Competition } from '../generated/graphql'
 import CompetitionLogo from '../components/CompetitionLogo'
+import { admissionCreate } from '../graphql'
+import { useMutation } from '@apollo/client'
 
 type Props = {
   close: () => void
+  onConfirm: () => void
   competition: Competition
   playerId: string
 }
 
-export default function Admission({ close, competition, playerId }: Props) {
-  // const onConfirm = () =>
-  //   updateChallenge({ variables: { id, data: { status: 'ACCEPTED' } } })
+export default function Admission({
+  close,
+  competition,
+  playerId,
+  onConfirm,
+}: Props) {
+  const [createAdmission] = useMutation(admissionCreate)
+  const onSignup = async () => {
+    const data = {
+      competition_id: competition.id,
+      steamId: playerId,
+      timestamp: new Date(),
+      status: 'PENDING',
+    }
+    await createAdmission({ variables: { data } })
+    onConfirm()
+    close()
+  }
 
   if (!open) return null
 
@@ -61,12 +79,14 @@ export default function Admission({ close, competition, playerId }: Props) {
         <Button
           colorClasses="bg-green-2"
           label="Sign Up"
+          onClick={onSignup}
           sizeClasses="h-fit w-fit text-lg rounded-full"
           extraClasses="px-6 py-2"
         />
         <Button
           colorClasses="bg-red-500"
           label="Cancel"
+          onClick={close}
           sizeClasses="h-fit w-fit text-lg rounded-full"
           extraClasses="px-6 py-2"
         />

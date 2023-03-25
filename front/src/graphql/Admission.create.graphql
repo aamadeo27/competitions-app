@@ -1,0 +1,9 @@
+mutation AdmissionCreate($data: AdmissionDTO!) {
+  createAdmission(data: $data) {
+    competition_id
+    steamId
+    timestamp
+    status
+  }
+}
+
