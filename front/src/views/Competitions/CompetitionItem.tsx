@@ -1,11 +1,13 @@
 import { CalendarIcon, PencilSquareIcon } from '@heroicons/react/24/outline'
 import { Link } from 'react-router-dom'
+import Tooltip from '../../components/Tooltip'
 import type {
   Competition,
   CompetitionMatch,
   User,
 } from '../../generated/graphql'
 import { getTime } from '../../logic/utils'
+import { useModals } from '../../modals/modals'
 import CompetitionHeader from './CompetitionHeader'
 
 type Props = {
@@ -108,6 +110,10 @@ const ordinal = [null, '1st', '2nd', '3rd']
 
 export default function CompetitionItem({ data, user }: Props) {
   const weekNum = week(data)
+  const modals = useModals()
+
+  const onClick = () =>
+    modals.setModal('admission', { competition: data, id: user?.steamId })
 
   return (
     <div className="mb-4 text-gray-700 font-semibold bg-white w-full rounded-xl h-fit flex flex-row divide-x overflow-hidden">
@@ -138,10 +144,16 @@ export default function CompetitionItem({ data, user }: Props) {
         </div>
         <div className="flex flex-row p-2 gap-2">
           {(!weekNum || weekNum < 0) && canRequestAdmission(data.id, user) && (
-            <PencilSquareIcon
-              className="h-6 w-6 stroke-gray-700 cursor-pointer"
-              onClick={() => console.log('Modal')}
-            />
+            <div className="tooltip-target h-fit w-fit">
+              <PencilSquareIcon
+                className="h-6 w-6 stroke-gray-700 cursor-pointer"
+                onClick={onClick}
+              />
+              <Tooltip
+                content={<div className="w-20">Sign Up</div>}
+                top="-top-6"
+              />
+            </div>
           )}
           {weekNum === undefined ? (
             <span className="inline-block text-top h-full py-1">

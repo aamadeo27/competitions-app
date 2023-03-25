@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import ReactDOM from 'react-dom'
+import Admission from './Admission'
 import Availability from './Availability'
 import Challenge from './Challenge'
 
@@ -12,6 +13,13 @@ const modals = {
       close={close}
       challenger={data.challenger}
       challenged={data.challenged}
+    />
+  ),
+  admission: (close: () => void, data?: any) => (
+    <Admission
+      close={close}
+      competition={data.competition}
+      playerId={data.playerId}
     />
   ),
 }
