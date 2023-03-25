@@ -20,6 +20,7 @@ const modals = {
       close={close}
       competition={data.competition}
       playerId={data.playerId}
+      onConfirm={data.onConfirm}
     />
   ),
 }

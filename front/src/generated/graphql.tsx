@@ -27,6 +27,13 @@ export type Admission = {
   timestamp: Scalars['DateTime'];
 };
 
+export type AdmissionDto = {
+  competition_id: Scalars['BigInt'];
+  status: Scalars['AdmissionStatus'];
+  steamId: Scalars['String'];
+  timestamp: Scalars['DateTime'];
+};
+
 export type Challenge = {
   __typename?: 'Challenge';
   challenged: Scalars['String'];
@@ -87,6 +94,8 @@ export type CreateCompetitionMatchDto = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  /** Admission create */
+  createAdmission: Admission;
   /** Challenge create */
   createChallenge: Challenge;
   /** Competition create */
@@ -95,6 +104,8 @@ export type Mutation = {
   createCompetitionMatch: CompetitionMatch;
   /** TimeFrame create */
   createTimeFrame: TimeFrame;
+  /** Admission delete */
+  deleteAdmission: Admission;
   /** Challenge delete */
   deleteChallenge: Challenge;
   /** Competition delete */
@@ -105,6 +116,8 @@ export type Mutation = {
   deleteTimeFrame: TimeFrame;
   /** User delete */
   deleteUser: User;
+  /** Admission update */
+  updateAdmission: Admission;
   /** Challenge update */
   updateChallenge: Challenge;
   /** Competition update */
@@ -115,6 +128,11 @@ export type Mutation = {
   updateTimeFrame: TimeFrame;
   /** User update */
   updateUser: User;
+};
+
+
+export type MutationCreateAdmissionArgs = {
+  data: AdmissionDto;
 };
 
 
@@ -135,6 +153,11 @@ export type MutationCreateCompetitionMatchArgs = {
 
 export type MutationCreateTimeFrameArgs = {
   data: TimeFrameDto;
+};
+
+
+export type MutationDeleteAdmissionArgs = {
+  id: Scalars['BigInt'];
 };
 
 
@@ -160,6 +183,11 @@ export type MutationDeleteTimeFrameArgs = {
 
 export type MutationDeleteUserArgs = {
   userId: Scalars['String'];
+};
+
+
+export type MutationUpdateAdmissionArgs = {
+  data: AdmissionDto;
 };
 
 
@@ -300,6 +328,13 @@ export type UserDto = {
   twitchId?: InputMaybe<Scalars['String']>;
 };
 
+export type AdmissionCreateMutationVariables = Exact<{
+  data: AdmissionDto;
+}>;
+
+
+export type AdmissionCreateMutation = { __typename?: 'Mutation', createAdmission: { __typename?: 'Admission', competition_id: any, steamId: string, timestamp: any, status: any } };
+
 export type CreateChallengeMutationVariables = Exact<{
   data: ChallengeDto;
 }>;
@@ -386,6 +421,42 @@ export type UpdateUserMutationVariables = Exact<{
 export type UpdateUserMutation = { __typename?: 'Mutation', updateUser: { __typename?: 'User', steamId: string } };
 
 
+export const AdmissionCreateDocument = gql`
+    mutation AdmissionCreate($data: AdmissionDTO!) {
+  createAdmission(data: $data) {
+    competition_id
+    steamId
+    timestamp
+    status
+  }
+}
+    `;
+export type AdmissionCreateMutationFn = Apollo.MutationFunction<AdmissionCreateMutation, AdmissionCreateMutationVariables>;
+
+/**
+ * __useAdmissionCreateMutation__
+ *
+ * To run a mutation, you first call `useAdmissionCreateMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAdmissionCreateMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [admissionCreateMutation, { data, loading, error }] = useAdmissionCreateMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useAdmissionCreateMutation(baseOptions?: Apollo.MutationHookOptions<AdmissionCreateMutation, AdmissionCreateMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<AdmissionCreateMutation, AdmissionCreateMutationVariables>(AdmissionCreateDocument, options);
+      }
+export type AdmissionCreateMutationHookResult = ReturnType<typeof useAdmissionCreateMutation>;
+export type AdmissionCreateMutationResult = Apollo.MutationResult<AdmissionCreateMutation>;
+export type AdmissionCreateMutationOptions = Apollo.BaseMutationOptions<AdmissionCreateMutation, AdmissionCreateMutationVariables>;
 export const CreateChallengeDocument = gql`
     mutation CreateChallenge($data: ChallengeDTO!) {
   createChallenge(data: $data) {

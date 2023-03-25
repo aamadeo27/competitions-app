@@ -10,17 +10,20 @@ import { useUser } from '../../logic/client'
 export default function Competitions() {
   const { data, loading } = useQuery(competitionsQuery)
   const user = useUser()?.user
-  const { data: userData } = useQuery(userQuery, {
-    variables: { id: user?.id },
-    skip: !!user,
+  console.log({ variables: { id: user?.id }, skip: !user })
+  const { data: userData, refetch } = useQuery(userQuery, {
+    variables: { userId: user?.id },
+    skip: !user,
   })
+  console.log({ userData })
 
   const competitions =
     data?.getCompetitions?.map((competition: Competition) => (
       <CompetitionItem
         data={competition}
         key={competition.name}
-        user={userData}
+        user={userData?.getUserById}
+        refresh={refetch}
       />
     )) ?? []
 

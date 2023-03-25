@@ -13,6 +13,7 @@ import CompetitionHeader from './CompetitionHeader'
 type Props = {
   data: Competition
   user?: User
+  refresh: () => void
 }
 
 const WEEK_IN_MS = 604800000
@@ -108,12 +109,18 @@ function NextMatch({ data }: { data?: CompetitionMatch }) {
 
 const ordinal = [null, '1st', '2nd', '3rd']
 
-export default function CompetitionItem({ data, user }: Props) {
+export default function CompetitionItem({ data, user, refresh }: Props) {
   const weekNum = week(data)
   const modals = useModals()
 
-  const onClick = () =>
-    modals.setModal('admission', { competition: data, id: user?.steamId })
+  const onClick = () => {
+    console.log({ user })
+    modals.setModal('admission', {
+      competition: data,
+      playerId: user?.steamId,
+      onConfirm: refresh,
+    })
+  }
 
   return (
     <div className="mb-4 text-gray-700 font-semibold bg-white w-full rounded-xl h-fit flex flex-row divide-x overflow-hidden">

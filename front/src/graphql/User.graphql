@@ -8,6 +8,10 @@ query GetUserById($userId: String!) {
     score
     games
     competitionId
+    admissions {
+      competition_id
+      steamId
+    }
     challenges {
       id
       challenger
